@@ -3,84 +3,76 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title id="page-title">متجر أونلاين</title>
+    <title id="page-title">متجر طلة </title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        :root { --primary: #2563eb; --admin: #dc2626; --bg: #f8fafc; --success: #10b981; }
-        body { font-family: 'Cairo', sans-serif; margin: 0; background: var(--bg); color: #1e293b; text-align: right; }
-        header { background: #fff; padding: 15px 5%; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 10px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 1000; }
-        .logo { font-size: 1.5rem; font-weight: bold; color: var(--primary); }
-        nav button { background: none; border: none; font-family: inherit; margin-right: 15px; cursor: pointer; font-weight: 600; }
-        .btn-main { background: var(--primary); color: white; padding: 8px 20px; border-radius: 8px; border: none; cursor: pointer; }
-        .btn-admin-nav { border: 2px solid var(--admin); color: var(--admin); padding: 6px 15px; border-radius: 8px; }
-        .container { max-width: 1200px; margin: 30px auto; padding: 0 20px; }
-        section { display: none; }
-        section.active { display: block; animation: fadeIn 0.4s ease; }
+        :root { --primary: #2563eb; --admin: #dc2626; --bg: #f3f4f6; --success: #10b981; }
+        body { font-family: 'Cairo', sans-serif; margin: 0; background: var(--bg); color: #1f2937; }
+        header { background: #ffffff; padding: 10px 5%; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 8px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 1000; }
+        .logo { font-size: 1.4rem; font-weight: bold; color: var(--primary); }
+        .container { max-width: 1100px; margin: 20px auto; padding: 0 15px; }
+        nav button { background: none; border: none; font-family: inherit; margin-right: 10px; cursor: pointer; font-weight: 600; }
+        .btn-main { background: var(--primary); color: white; padding: 8px 18px; border-radius: 8px; border: none; }
+        .section { display: none; }
+        .section.active { display: block; animation: fadeIn 0.3s; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 25px; }
-        .card { background: white; border-radius: 15px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
-        .card img { width: 100%; height: 250px; object-fit: cover; }
-        .card-info { padding: 15px; text-align: center; }
-        .buy-btn { width: 100%; background: var(--success); color: white; border: none; padding: 10px; border-radius: 8px; cursor: pointer; font-weight: bold; }
-        .admin-box { background: white; padding: 20px; border-radius: 12px; margin-bottom: 20px; border-right: 5px solid var(--admin); box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
-        input, select { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; font-family: inherit; }
-        .delete-btn { background: #fee2e2; color: var(--admin); border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer; }
-        .loading-bar { height: 5px; background: var(--success); width: 0%; transition: 0.3s; margin-top: 5px; border-radius: 5px; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 20px; }
+        .card { background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .card img { width: 100%; height: 220px; object-fit: cover; }
+        .card-info { padding: 12px; text-align: center; }
+        .admin-panel { background: white; padding: 20px; border-radius: 12px; border-top: 4px solid var(--admin); margin-bottom: 20px; }
+        input { width: 100%; padding: 10px; margin: 8px 0; border: 1px solid #ddd; border-radius: 6px; box-sizing: border-box; }
+        .progress-bar { height: 6px; background: var(--success); width: 0%; transition: 0.2s; border-radius: 3px; }
     </style>
 </head>
 <body>
 
     <header>
-        <div class="logo" id="brand-name">تحميل المتجر...</div>
+        <div class="logo" id="brand-name">تحميل...</div>
         <nav>
             <button onclick="showSection('home')">الرئيسية</button>
-            <button id="login-nav" onclick="showSection('login')" class="btn-main">دخول</button>
-            <button id="admin-nav" onclick="showSection('admin')" class="btn-admin-nav" style="display:none;">لوحة المدير</button>
+            <button id="login-btn" onclick="showSection('login')" class="btn-main">دخول</button>
+            <button id="admin-nav" onclick="showSection('admin')" style="display:none; color: var(--admin);">لوحة المدير</button>
             <button id="logout-btn" onclick="logout()" style="display:none; color: gray;">خروج</button>
         </nav>
     </header>
 
     <div class="container">
         
-        <section id="login">
-            <div style="max-width: 400px; margin: auto; background: white; padding: 30px; border-radius: 15px; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+        <section id="login" class="section">
+            <div style="max-width: 350px; margin: 50px auto; background: white; padding: 25px; border-radius: 12px; text-align: center;">
                 <h2>تسجيل الدخول</h2>
-                <input type="text" id="user-phone" placeholder="رقم الهاتف">
-                <input type="password" id="user-pass" placeholder="كلمة السر">
-                <button onclick="login()" class="btn-main" style="width: 100%; margin-top: 10px;">دخول</button>
+                <input type="text" id="phone" placeholder="رقم الهاتف">
+                <input type="password" id="pass" placeholder="كلمة السر">
+                <button onclick="handleLogin()" class="btn-main" style="width: 100%;">دخول</button>
             </div>
         </section>
 
-        <section id="home" class="active">
-            <div id="products-list" class="grid">
-                </div>
+        <section id="home" class="section active">
+            <div id="products-list" class="grid"></div>
         </section>
 
-        <section id="admin">
-            <h2 style="color: var(--admin);">إدارة المتجر</h2>
+        <section id="admin" class="section">
+            <div class="admin-panel">
+                <h3>إعدادات الموقع</h3>
+                <input type="text" id="new-name" placeholder="تغيير اسم المتجر">
+                <button onclick="updateName()" class="btn-main">حفظ الاسم الجديد</button>
+            </div>
             
-            <div class="admin-box">
-                <h3>1. تعديل اسم الموقع</h3>
-                <input type="text" id="new-store-name" placeholder="الاسم الجديد للمتجر">
-                <button onclick="updateStoreName()" class="btn-main">حفظ الاسم</button>
-            </div>
-
-            <div class="admin-box">
-                <h3>2. إضافة منتج جديد (رفع صورة)</h3>
-                <input type="text" id="p-name" placeholder="اسم المنتج (مثال: فستان سواريه)">
+            <div class="admin-panel">
+                <h3>إضافة منتج جديد</h3>
+                <input type="text" id="p-title" placeholder="اسم المنتج">
                 <input type="number" id="p-price" placeholder="السعر">
-                <label>اختر صورة من جهازك:</label>
                 <input type="file" id="p-file" accept="image/*">
-                <div id="upload-progress" class="loading-bar"></div>
-                <button id="add-btn" onclick="uploadAndAddProduct()" class="btn-main" style="background: var(--success); margin-top: 15px;">نشر المنتج للجميع</button>
+                <div id="up-progress" class="progress-bar"></div>
+                <button id="up-btn" onclick="uploadProduct()" class="btn-main" style="background: var(--success); margin-top: 10px;">رفع ونشر المنتج</button>
             </div>
 
-            <div class="admin-box">
-                <h3>3. المنتجات الحالية</h3>
-                <div id="admin-products-list"></div>
+            <div class="admin-panel">
+                <h3>التحكم بالمنتجات</h3>
+                <div id="admin-list"></div>
             </div>
         </section>
-
     </div>
 
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
@@ -88,9 +80,9 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>
 
     <script>
-        // تكوين Firebase (استبدل هذه البيانات ببيانات مشروعك الخاصة)
+        // ضع بيانات Firebase الخاصة بك هنا ليعمل الموقع أونلاين
         const firebaseConfig = {
-            apiKey: "ضع_هنا_API_KEY",
+            apiKey: "AIzaSy...",
             authDomain: "your-project.firebaseapp.com",
             databaseURL: "https://your-project-default-rtdb.firebaseio.com",
             projectId: "your-project",
@@ -107,134 +99,98 @@
         const ADMIN_PASS = "2009257";
 
         function showSection(id) {
-            document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
             document.getElementById(id).classList.add('active');
         }
 
-        // جلب البيانات عند التشغيل
         window.onload = () => {
-            // اسم المتجر
-            db.ref('storeName').on('value', (s) => {
-                const name = s.val() || "متجري";
+            // مزامنة اسم المتجر فوراً عند الجميع
+            db.ref('storeName').on('value', (snap) => {
+                const name = snap.val() || "متجري";
                 document.getElementById('brand-name').innerText = name;
                 document.title = name;
             });
 
-            // قائمة المنتجات
-            db.ref('products').on('value', (s) => {
-                const data = s.val();
+            // مزامنة المنتجات فوراً عند الجميع
+            db.ref('products').on('value', (snap) => {
+                const data = snap.val();
                 const list = data ? Object.entries(data).map(([id, val]) => ({key: id, ...val})) : [];
                 renderHome(list);
                 if(localStorage.getItem('role') === 'admin') renderAdminList(list);
             });
 
-            checkAuth();
+            if(localStorage.getItem('role')) {
+                document.getElementById('login-btn').style.display = "none";
+                document.getElementById('logout-btn').style.display = "inline-block";
+                if(localStorage.getItem('role') === 'admin') document.getElementById('admin-nav').style.display = "inline-block";
+            }
         };
 
-        function renderHome(products) {
+        function renderHome(list) {
             const container = document.getElementById('products-list');
-            if(products.length === 0) { container.innerHTML = "<p>لا توجد منتجات حالياً.</p>"; return; }
-            container.innerHTML = products.map(p => `
+            container.innerHTML = list.map(p => `
                 <div class="card">
-                    <img src="${p.img}" alt="${p.name}">
+                    <img src="${p.img}">
                     <div class="card-info">
-                        <h3>${p.name}</h3>
-                        <p style="color:var(--primary); font-weight:bold; font-size:1.2rem;">${p.price} ج.م</p>
-                        <button class="buy-btn" onclick="alert('تمت إضافة ${p.name} للسلة')">إضافة للسلة</button>
+                        <h4>${p.name}</h4>
+                        <p style="color:var(--primary); font-weight:bold;">${p.price} ج.م</p>
+                        <button class="btn-main" onclick="alert('تمت الإضافة للسلة')">إضافة للسلة</button>
                     </div>
                 </div>
             `).join('');
         }
 
-        // وظائف المدير: رفع الصور وإضافة المنتج
-        async function uploadAndAddProduct() {
-            const name = document.getElementById('p-name').value;
+        // وظائف المدير
+        async function uploadProduct() {
+            const name = document.getElementById('p-title').value;
             const price = document.getElementById('p-price').value;
             const file = document.getElementById('p-file').files[0];
-            const btn = document.getElementById('add-btn');
+            const btn = document.getElementById('up-btn');
 
-            if(!name || !price || !file) { alert("يرجى ملء البيانات واختيار صورة"); return; }
-
+            if(!name || !price || !file) return alert("أكمل البيانات");
             btn.disabled = true;
-            btn.innerText = "جاري الرفع...";
 
-            // 1. رفع الصورة لـ Firebase Storage
-            const storageRef = storage.ref('products/' + Date.now() + "_" + file.name);
-            const uploadTask = storageRef.put(file);
+            const ref = storage.ref('items/' + Date.now() + "_" + file.name);
+            const task = ref.put(file);
 
-            uploadTask.on('state_changed', 
-                (snapshot) => {
-                    const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-                    document.getElementById('upload-progress').style.width = progress + "%";
-                }, 
-                (error) => { alert("خطأ في الرفع"); btn.disabled = false; }, 
+            task.on('state_changed', 
+                (s) => { document.getElementById('up-progress').style.width = (s.bytesTransferred/s.totalBytes)*100 + "%" },
+                (e) => { alert("خطأ"); btn.disabled = false; },
                 () => {
-                    uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
-                        // 2. إضافة بيانات المنتج لـ Database
-                        db.ref('products').push({
-                            name: name,
-                            price: price,
-                            img: downloadURL,
-                            createdAt: Date.now()
-                        }).then(() => {
-                            alert("تم نشر المنتج بنجاح!");
-                            location.reload();
-                        });
+                    task.snapshot.ref.getDownloadURL().then(url => {
+                        db.ref('products').push({ name, price, img: url });
+                        alert("تم النشر!");
+                        location.reload();
                     });
                 }
             );
         }
 
-        function updateStoreName() {
-            const name = document.getElementById('new-store-name').value;
-            if(name) db.ref('storeName').set(name).then(() => alert("تم تحديث الاسم عند الجميع"));
+        function updateName() {
+            const name = document.getElementById('new-name').value;
+            if(name) db.ref('storeName').set(name).then(() => alert("تحدث الاسم عند الكل"));
         }
 
-        function deleteProduct(key, imgUrl) {
-            if(confirm("هل أنت متأكد من حذف المنتج؟")) {
-                db.ref('products/' + key).remove().then(() => {
-                    // حذف الصورة من التخزين أيضاً
-                    const imageRef = storage.refFromURL(imgUrl);
-                    imageRef.delete().catch(e => console.log("Image cleanup failed"));
-                });
-            }
+        function deleteItem(key) {
+            if(confirm("حذف المنتج؟")) db.ref('products/' + key).remove();
         }
 
-        function renderAdminList(products) {
-            const list = document.getElementById('admin-products-list');
-            list.innerHTML = products.map(p => `
-                <div style="display:flex; justify-content:space-between; align-items:center; padding:10px; border-bottom:1px solid #eee;">
-                    <img src="${p.img}" width="40" height="40" style="border-radius:5px; object-fit:cover;">
-                    <span style="flex:1; margin-right:10px;">${p.name}</span>
-                    <button class="delete-btn" onclick="deleteProduct('${p.key}', '${p.img}')">حذف</button>
+        function renderAdminList(list) {
+            const container = document.getElementById('admin-list');
+            container.innerHTML = list.map(p => `
+                <div style="display:flex; justify-content:space-between; padding:8px; border-bottom:1px solid #eee;">
+                    <span>${p.name}</span>
+                    <button onclick="deleteItem('${p.key}')" style="color:red; border:none; background:none; cursor:pointer;">حذف</button>
                 </div>
             `).join('');
         }
 
-        // تسجيل الدخول
-        function login() {
-            const phone = document.getElementById('user-phone').value;
-            const pass = document.getElementById('user-pass').value;
-            if(phone === ADMIN_PHONE && pass === ADMIN_PASS) {
-                localStorage.setItem('role', 'admin');
-                alert("مرحباً يا مدير");
-            } else {
-                localStorage.setItem('role', 'user');
-                alert("تم الدخول كمستخدم");
-            }
+        function handleLogin() {
+            const u = document.getElementById('phone').value;
+            const p = document.getElementById('pass').value;
+            if(u === ADMIN_PHONE && p === ADMIN_PASS) localStorage.setItem('role', 'admin');
+            else localStorage.setItem('role', 'user');
             location.reload();
-        }
-
-        function checkAuth() {
-            const role = localStorage.getItem('role');
-            if(role === 'admin') {
-                document.getElementById('admin-nav').style.display = "inline-block";
-                document.getElementById('logout-btn').style.display = "inline-block";
-                document.getElementById('login-nav').style.display = "none";
-            } else if(role === 'user') {
-                document.getElementById('logout-btn').style.display = "inline-block";
-                document.getElementById('login-nav').style.display = "none";
-            }
         }
 
         function logout() { localStorage.clear(); location.reload(); }
