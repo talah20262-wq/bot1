@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة تحكم بوت النجم ✨</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #4f46e5;
+            --primary-hover: #4338ca;
+            --success-color: #10b981;
+            --success-hover: #059669;
+            --danger-color: #ef4444;
+            --danger-hover: #dc2626;
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --text-color: #1e293b;
+            --text-muted: #64748b;
+            --border-color: #e2e8f0;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px 0;
+        }
+
+        header h1 {
+            font-size: 2rem;
+            color: var(--primary-color);
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        header p {
+            color: var(--text-muted);
+            font-size: 1rem;
+        }
+
+        .grid {
+            display: block;
+            margin-bottom: 25px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+            border: 1px solid var(--border-color);
+            margin-bottom: 25px;
+        }
+
+        .card-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 16px;
+            color: var(--text-color);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Status Section */
+        .status-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #f1f5f9;
+            padding: 16px 20px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+        }
+
+        .status-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .status-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: var(--danger-color);
+            display: inline-block;
+        }
+
+        .status-dot.active {
+            background-color: var(--success-color);
+            box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.2);
+        }
+
+        .status-text {
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+        .btn-group {
+            display: table;
+            width: 100%;
+            table-layout: fixed;
+            border-collapse: separate;
+            border-spacing: 12px 0;
+            margin: 0 -12px;
+        }
+
+        .btn-cell {
+            display: table-cell;
+        }
+
+        button {
+            font-family: 'Tajawal', sans-serif;
+            width: 100%;
+            padding: 14px 20px;
+            font-size: 1rem;
+            font-weight: 500;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-start {
+            background-color: var(--success-color);
+            color: white;
+        }
+
+        .btn-start:hover {
+            background-color: var(--success-hover);
+        }
+
+        .btn-stop {
+            background-color: var(--danger-color);
+            color: white;
+        }
+
+        .btn-stop:hover {
+            background-color: var(--danger-hover);
+        }
+
+        /* Chat Section */
+        .chat-container {
+            display: flex;
+            flex-direction: column;
+            height: 450px;
+        }
+
+        .chat-box {
+            flex: 1;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            background-color: #fafafa;
+            padding: 20px;
+            overflow-y: auto;
+            margin-bottom: 16px;
+        }
+
+        .message {
+            margin-bottom: 15px;
+            max-width: 80%;
+            padding: 12px 16px;
+            border-radius: 14px;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            word-wrap: break-word;
+        }
+
+        .message.bot {
+            background-color: #e2e8f0;
+            color: var(--text-color);
+            margin-left: auto;
+            border-bottom-right-radius: 4px;
+        }
+
+        .message.user {
+            background-color: var(--primary-color);
+            color: white;
+            margin-right: auto;
+            border-bottom-left-radius: 4px;
+        }
+
+        .message.system {
+            background-color: #f1f5f9;
+            color: var(--text-muted);
+            margin: 10px auto;
+            text-align: center;
+            font-size: 0.85rem;
+            border-radius: 20px;
+            max-width: 100%;
+            padding: 4px 12px;
+        }
+
+        .input-wrapper {
+            display: table;
+            width: 100%;
+        }
+
+        .input-cell {
+            display: table-cell;
+            vertical-align: middle;
+        }
+
+        .input-cell.text-input {
+            width: 85%;
+            padding-left: 10px;
+        }
+
+        .input-cell.btn-input {
+            width: 15%;
+        }
+
+        .chat-input {
+            font-family: 'Tajawal', sans-serif;
+            width: 100%;
+            padding: 14px 16px;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .chat-input:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+        }
+
+        .btn-send {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .btn-send:hover {
+            background-color: var(--primary-hover);
+        }
+
+        /* Config Information List */
+        .info-list {
+            list-style: none;
+        }
+
+        .info-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .info-item:last-child {
+            border-bottom: none;
+        }
+
+        .info-label {
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .info-value {
+            font-weight: 700;
+            color: var(--text-color);
+            font-family: monospace;
+            font-size: 0.95rem;
+            direction: ltr;
+        }
+
+        .info-value.badge {
+            font-family: 'Tajawal', sans-serif;
+            background: #e0f2fe;
+            color: #0369a1;
+            padding: 2px 10px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>لوحة تحكم بوت النجم ✨</h1>
+        <p>إدارة البوت الكامل الذكي وتجربة الذكاء الاصطناعي مباشرة من مكان واحد</p>
+    </header>
+
+    <div class="grid">
+        <!-- قسم التحكم بالبوت -->
+        <div class="card">
+            <div class="card-title">⚙️ التحكم في منصة تيليجرام</div>
+            <div class="status-wrapper">
+                <div class="status-info">
+                    <span id="status-dot" class="status-dot"></span>
+                    <span>حالة البوت الحالية:</span>
+                </div>
+                <div id="status-text" class="status-text" style="color: var(--danger-color);">متوقف عن العمل</div>
+            </div>
+            <div class="btn-group">
+                <div class="btn-cell">
+                    <button class="btn-start" onclick="controlBot('start')">▶️ تشغيل البوت</button>
+                </div>
+                <div class="btn-cell">
+                    <button class="btn-stop" onclick="controlBot('stop')">⏹️ إيقاف البوت</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- قسم محادثة الـ AI المستقلة ومحاكاة البوت -->
+        <div class="card">
+            <div class="card-title">💬 نافذة اختبار الـ AI وتوجيه الأوامر المباشرة</div>
+            <div class="chat-container">
+                <div class="chat-box" id="chat-box">
+                    <div class="message bot">مرحباً! أنا <b>النجم ✨</b>. واجهة اختبار الـ AI جاهزة لتلقي طلباتك ومحاكاة الردود السريعة والموجزة. كيف يمكنني مساعدتك الآن؟</div>
+                </div>
+                <div class="input-wrapper">
+                    <div class="input-cell text-input">
+                        <input type="text" id="chat-input" class="chat-input" placeholder="اكتب سؤالك أو أمرك للذكاء الاصطناعي هنا..." onkeypress="handleKeyPress(event)">
+                    </div>
+                    <div class="input-cell btn-input">
+                        <button class="btn-send" onclick="sendMessage()">إرسال</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- معلومات التكوين والإعدادات الأساسية لقراءة البوت -->
+        <div class="card">
+            <div class="card-title">📝 بيانات تهيئة النظام المتصلة</div>
+            <ul class="info-list">
+                <li class="info-item">
+                    <span class="info-label">اسم البوت (الهوية المحفوظة):</span>
+                    <span class="info-value badge">النجم ✨</span>
+                </li>
+                <li class="info-item">
+                    <span class="info-label">نموذج الذكاء الاصطناعي (AI Model):</span>
+                    <span class="info-value" style="color:#4f46e5;">gemini-2.5-flash</span>
+                </li>
+                <li class="info-item">
+                    <span class="info-label">معرف توكن تيليجرام (Telegram Token):</span>
+                    <span class="info-value">8708652512:AAGQsLf...</span>
+                </li>
+                <li class="info-item">
+                    <span class="info-label">نمط التوجيه المسبق (System Instruction):</span>
+                    <span class="info-value badge" style="background:#f1f5f9; color:#475569;">ردود سريعة وموجزة باللغة العربية</span>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<script>
+    // وظيفة التحكم وتشغيل/إيقاف البوت عبر الـ API الخاص بـ Backend (Flask)
+    function controlBot(action) {
+        fetch('/control', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ action: action })
+        })
+        .then(response => response.json())
+        .then(data => {
+            const statusDot = document.getElementById('status-dot');
+            const statusText = document.getElementById('status-text');
+            const chatBox = document.getElementById('chat-box');
+            
+            if (data.status === "يعمل الآن") {
+                statusDot.classList.add('active');
+                statusText.innerText = "يعمل الآن بنشاط ✅";
+                statusText.style.color = "var(--success-color)";
+            } else {
+                statusDot.classList.remove('active');
+                statusText.innerText = "متوقف عن العمل 🛑";
+                statusText.style.color = "var(--danger-color)";
+            }
+            
+            // إضافة إشعار في صندوق المحادثة كمعلومات نظام
+            chatBox.innerHTML += `<div class="message system">تحديث النظام: ${data.message}</div>`;
+            chatBox.scrollTop = chatBox.scrollHeight;
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('حدث خطأ أثناء الاتصال بالخادم الرئيسي لبوت النجم.');
+        });
+    }
+
+    // إرسال الرسائل واختبار ذكاء الـ AI مباشرة من الواجهة الويب
+    function sendMessage() {
+        const inputField = document.getElementById('chat-input');
+        const messageText = inputField.value.trim();
+        if (!messageText) return;
+
+        const chatBox = document.getElementById('chat-box');
+
+        // عرض رسالة المستخدم فوراً في الصندوق
+        chatBox.innerHTML += `<div class="message user">${messageText}</div>`;
+        inputField.value = '';
+        chatBox.scrollTop = chatBox.scrollHeight;
+
+        // إظهار علامة انتظار للرد
+        const loadingId = 'loading-' + Date.now();
+        chatBox.innerHTML += `<div class="message bot" id="${loadingId}"><i>جاري التفكير وتوليد الإجابة السريعة...</i></div>`;
+        chatBox.scrollTop = chatBox.scrollHeight;
+
+        // إرسال الطلب إلى السيرفر الخلفي المربوط بـ Gemini API
+        fetch('/ask-ai', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ text: messageText })
+        })
+        .then(response => response.json())
+        .then(data => {
+            const loadingEl = document.getElementById(loadingId);
+            if (loadingEl) {
+                loadingEl.innerHTML = data.reply;
+            }
+            chatBox.scrollTop = chatBox.scrollHeight;
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            const loadingEl = document.getElementById(loadingId);
+            if (loadingEl) {
+                loadingEl.innerHTML = `<span style="color: var(--danger-color)">فشل الاتصال بالذكاء الاصطناعي. يرجى التحقق من تشغيل السيرفر.</span>`;
+            }
+        });
+    }
+
+    function handleKeyPress(event) {
+        if (event.key === 'Enter') {
+            sendMessage();
+        }
+    }
+</script>
+
+</body>
+</html>
